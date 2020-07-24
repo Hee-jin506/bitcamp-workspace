@@ -5,28 +5,23 @@ package com.eomcs.basic.ex03;
 
 class Exam0230 {
     public static void main(String[] args) {
-        // 출력 명령문
-        // - System.out.println(값);
-
-        // 자바 기본 정수값을 저장하는 메모리 크기: 4바이트
-        System.out.println(21_4748_3647); 
-        System.out.println(-21_4748_3648); 
-
-        //System.out.println(21_4748_3648); 
-        //System.out.println(-21_4748_3649);
-
-        // 8바이트 메모리를 사용하는 정수 리터럴
-        System.out.println(21_4748_3648L); 
-        System.out.println(-21_4748_3649l); 
-
-        System.out.println(1); // 4바이트 메모리를 사용하는 1
-        System.out.println(1L); // 8바이트 메모리를 사용하는 1
-
-        // 
-        System.out.println(Integer.MAX_VALUE); // 4바이트 정수 최대값
-        System.out.println(Integer.MIN_VALUE); // 4바이트 정수 최소값
-
-        System.out.println(Long.MAX_VALUE); // 8바이트 정수 최대값
-        System.out.println(Long.MIN_VALUE); // 8바이트 정수 최소값
+        System.out.println(2147483647);
+        System.out.println(-2147483648);
+        
+        // System.out.println(2147483648);
+        // System.out.println(-2147483649);
+        
+        
+        System.out.println(2147483648L);
+        System.out.println(-2147483649L);
+        
+        System.out.println(Integer.MAX_VALUE);
+        System.out.println(Integer.MIN_VALUE);
+        System.out.println(Long.MAX_VALUE);
+        System.out.println(Long.MIN_VALUE);
+        
+        // 다음은 크기가 다른 정수이다.
+        System.out.println(100);
+        System.out.println(100L);
     }
 }

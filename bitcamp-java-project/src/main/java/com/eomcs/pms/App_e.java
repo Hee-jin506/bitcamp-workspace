@@ -12,29 +12,26 @@ import java.sql.Date;
 // 4) 반복문을 사용하면 같은 코드를 중복해서 작성할 필요가 없다.
 // 5) 배열 개수를 변수에서 관리하기
 // - 변수의 값만 바꾸면 배열 개수를 바로 변경할 수 있어 편하다.
-// 6) 상수를 사용하여 초기값을 변경하지 못하게 막기
-// - 변수는 중간에 값을 바꿀 수 있기 때문에 값을 바꾸지 말아야하는 경우
-// 상수로 선언
-public class App {
+public class App_e {
   public static void main(String[] args) {
 
     Scanner keyInput = new Scanner(System.in);
 
     System.out.println("[회원]");
-    final int MAX_LENGTH = 5;
+    int maxLength = 5;
     int no1 = 0, no2 = 0, no3 = 0, no4 = 0, no5 = 0;
-    int[] no = new int[MAX_LENGTH];
-    String[] name = new String[MAX_LENGTH];
-    String[] email = new String[MAX_LENGTH];
-    String[] password = new String[MAX_LENGTH];
-    String[] photo = new String[MAX_LENGTH];
-    String[] tel = new String[MAX_LENGTH];
-    Date[] now = new Date[MAX_LENGTH];
+    int[] no = new int[maxLength];
+    String[] name = new String[maxLength];
+    String[] email = new String[maxLength];
+    String[] password = new String[maxLength];
+    String[] photo = new String[maxLength];
+    String[] tel = new String[maxLength];
+    Date[] now = new Date[maxLength];
     
     long currentMillis;
     int count = 0;
     
-    for (int i = 0; i < MAX_LENGTH; i++) {
+    for (int i = 0; i < maxLength; i++) {
       count++;
       System.out.print("번호? ");
       no[i] = keyInput.nextInt();

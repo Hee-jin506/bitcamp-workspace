@@ -15,24 +15,37 @@ import java.sql.Date;
 // 6) 상수를 사용하여 초기값을 변경하지 못하게 막기
 // - 변수는 중간에 값을 바꿀 수 있기 때문에 값을 바꾸지 말아야하는 경우
 // 상수로 선언
-public class App {
+// 7) 메서드를 사용하여 코드를 분리하기
+// 메서드를 사용하면 기능별로 코드를 별도의 블럭으로 분리할 수 있다.
+// 작은 단위로 코드가 분리되면 관리하기 쉽다.
+
+public class App_g {
+  
+  static int count = 0;
+  final static int MAX_LENGTH = 5;
+  static int no1 = 0, no2 = 0, no3 = 0, no4 = 0, no5 = 0;
+  static int[] no = new int[MAX_LENGTH];
+  static String[] name = new String[MAX_LENGTH];
+  static String[] email = new String[MAX_LENGTH];
+  static String[] password = new String[MAX_LENGTH];
+  static String[] photo = new String[MAX_LENGTH];
+  static String[] tel = new String[MAX_LENGTH];
+  static Date[] now = new Date[MAX_LENGTH];
+  
   public static void main(String[] args) {
 
-    Scanner keyInput = new Scanner(System.in);
-
     System.out.println("[회원]");
-    final int MAX_LENGTH = 5;
-    int no1 = 0, no2 = 0, no3 = 0, no4 = 0, no5 = 0;
-    int[] no = new int[MAX_LENGTH];
-    String[] name = new String[MAX_LENGTH];
-    String[] email = new String[MAX_LENGTH];
-    String[] password = new String[MAX_LENGTH];
-    String[] photo = new String[MAX_LENGTH];
-    String[] tel = new String[MAX_LENGTH];
-    Date[] now = new Date[MAX_LENGTH];
     
+    inputMembers(); // 별도의 블록으로 분리한 코드 실행 
+
+    System.out.println("-----------------------------");
+ 
+    printMembers();
+  }
+  
+  static void inputMembers() {
+    Scanner keyInput = new Scanner(System.in);
     long currentMillis;
-    int count = 0;
     
     for (int i = 0; i < MAX_LENGTH; i++) {
       count++;
@@ -62,10 +75,11 @@ public class App {
         break; // 반복문을 멈춰라.
       }
     }
-    
     keyInput.close();
+  }
+  
+  static void printMembers() {
     
-    System.out.println("-----------------------------");
     for (int i = 0; i < count; i++) {
       System.out.printf("%d, %s, %s, %s, %s\n", no[i], name[i], email[i], tel[i], now[i].toString());
     }

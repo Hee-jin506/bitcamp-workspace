@@ -15,7 +15,7 @@ import java.sql.Date;
 // 6) 상수를 사용하여 초기값을 변경하지 못하게 막기
 // - 변수는 중간에 값을 바꿀 수 있기 때문에 값을 바꾸지 말아야하는 경우
 // 상수로 선언
-public class App {
+public class App_f {
   public static void main(String[] args) {
 
     Scanner keyInput = new Scanner(System.in);
