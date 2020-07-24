@@ -22,7 +22,7 @@ public class App_f {
 
     System.out.println("[회원]");
     final int MAX_LENGTH = 5;
-    int no1 = 0, no2 = 0, no3 = 0, no4 = 0, no5 = 0;
+
     int[] no = new int[MAX_LENGTH];
     String[] name = new String[MAX_LENGTH];
     String[] email = new String[MAX_LENGTH];
