@@ -2,12 +2,36 @@
 #include <stdio.h>
 
 int main() {
-    int age;
-    age =  20;
-    printf("age - %d\n", age);
-    
-    int* p = malloc(4);
-    *pAge = 200;
-    printf("i = %d\n", *pAge);
-    return 0;
+  int i[3];
+  i[0] = 100;
+  i[1] = 200;
+  i[2] = 300;
+  
+  printf("%d, %d, %d\n", i[0], i[1], i[2]);
+  
+  int* p;
+  
+  // p = &i[0];
+  p = i; // c에서는 배열 이름이 배열의 시작주소이므로 이렇게 포인터 변수 선언 가능
+  printf("%d\n", *(p + 2)); // c는 주소변수 값을 연산할 수 있다. 자바는 불가능
+  // 1의 의미는 1바이트를 더하라는 뜻이 아니라, 메모리 기본단위 1을 더하라는 뜻. 즉 4바이트
+  // 배열이 0부터 시작하는 이유는 메모리 시작주소에서 +0, +1, +2 이기 때문
+
+  // byte* p2 = (byte*)malloc(sizeof(int)*3)단위로 다루는 메모리를 12바이트를 만들어라.
+  int* p2 = (int*)malloc(12); // int 즉 4바이트 단위로 다루고 싶다면
+  
+  *(p2 + 0) = 110;
+  *(p2 + 1) = 220;
+  *(p2 + 2) = 330;
+  
+  printf("%d,%d,%d\n", p2[0], p2[1], p2[2]);
+  
+  printf("%d\n", p2[3]);
+  
+  free(p2);
+  printf("%d, %d, %d\n", p2[0], p2[1], p2[2]);
+  
+ 
+  
+  return 0;
 }

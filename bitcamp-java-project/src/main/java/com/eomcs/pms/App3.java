@@ -1,30 +1,49 @@
 package com.eomcs.pms;
 
+import java.sql.Date;
+
 public class App3 {
 
   public static void main(String[] args) {
+    
+    final int MAX_LENGTH = 5;
+
+    String[] project = new String[MAX_LENGTH];
+    int[] no = new int[MAX_LENGTH];
+    String[] content = new String[MAX_LENGTH];
+    Date[] endDate = new Date[MAX_LENGTH];
+    String[] state = new String[MAX_LENGTH];
+    String[] worker = new String[MAX_LENGTH];
+    
+    int count = 0;
+    
     java.util.Scanner keyInput = new java.util.Scanner(System.in);
     
-    System.out.print("[작업]");
-    System.out.print("프로젝트? ");
-    String project = keyInput.nextLine();
-    System.out.print("번호? ");
-    String str = keyInput.nextLine();
-    int no = Integer.parseInt(str);
-    System.out.print("내용? ");
-    String content = keyInput.nextLine();
-    System.out.print("완료일? ");
-    java.sql.Date endDate = java.sql.Date.valueOf(keyInput.nextLine());
-    System.out.println("상태? ");
-    System.out.println("0: 신규");
-    System.out.println("1: 진행중");
-    System.out.println("2: 완료");
-    // 조건문 
-    
-    System.out.print("> ");
-    String state = keyInput.nextLine();
-    System.out.print("담당자? ");
-    String worker = keyInput.nextLine();
+    for (int i = 0; i < MAX_LENGTH; i++) {
+      count++;
+      
+      System.out.print("[작업]");
+      System.out.print("프로젝트? ");
+      project[i] = keyInput.nextLine();
+      System.out.print("번호? ");
+      String str = keyInput.nextLine();
+      no[i] = Integer.parseInt(str);
+      System.out.print("내용? ");
+      content[i] = keyInput.nextLine();
+      System.out.print("완료일? ");
+      endDate[i] = java.sql.Date.valueOf(keyInput.nextLine());
+      System.out.println("상태? ");
+      System.out.println("0: 신규");
+      System.out.println("1: 진행중");
+      System.out.println("2: 완료");
+      // 조건문 
+      
+      System.out.print("> ");
+      state[i] = keyInput.nextLine();
+      System.out.print("담당자? ");
+      worker[i] = keyInput.nextLine();
+      
+    }
     
     keyInput.close();
     
