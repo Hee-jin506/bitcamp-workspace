@@ -49,19 +49,13 @@ public class App3 {
     
     System.out.println("----------------------");
 
-    System.out.printf("프로젝트: %s\n", project);
-    System.out.printf("번호: %d\n", no); 
-    System.out.printf("내용: %s\n", content);
-    System.out.printf("완료일: %s\n", endDate.toString());
-    System.out.print("상태: ");
-
-//    if (state.equals("0")) {
-//      System.out.println("신규"); 
-//    } else if (state.equals("1")) {
-//      System.out.println("진행중");
-//    } else {
-//      System.out.println("완료");
-//    }
+    for (int i = 0; i < count; i++) {
+      System.out.printf("프로젝트: %s", project[i]);
+      System.out.printf("번호: %d", no[i]);
+      System.out.printf("내용: %s", content[i]);
+      System.out.printf("완료일: %s", endDate[i].toString);
+      
+    }
     
     switch (state) {
       case "0" :
@@ -71,6 +65,6 @@ public class App3 {
       default :
         System.out.println("완료");
     }
-    System.out.printf("담당자: %s\n", worker);
+    
   }
 }
