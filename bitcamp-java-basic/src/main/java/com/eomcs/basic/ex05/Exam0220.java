@@ -5,6 +5,8 @@ public class Exam0220 {
   public static void main(String[] args) {
     double d1 = 987.6543;
     double d2 = 1.111111;
+    System.out.println(d1);
+    System.out.println(d2);
     System.out.println((d1 + d2) == 988.765411);
     // 결과는 false이다.
     // 이유?
@@ -36,6 +38,9 @@ public class Exam0220 {
     // => 다음과 같이 개발자가 직접 처리해야 한다.
     double EPSILON = 0.00001;
     System.out.println(Math.abs((d1 + d2) - (x + y)) < EPSILON);
+    
+    float f = 1.23456789f;
+    System.out.printf("%14.10f\n", f);
     
   }
 }

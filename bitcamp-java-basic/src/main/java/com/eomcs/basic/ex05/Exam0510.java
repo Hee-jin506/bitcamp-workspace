@@ -5,15 +5,15 @@ package com.eomcs.basic.ex05;
 public class Exam0510 {
   public static void main(String[] args) {
     // 조건연산자
-    // => 조건 ? 표현식1 : 표현식2
+    // => 조건 ? 표현식1 : 표현식2 --> 표현식은 반드시 결과를 가져와야한다.
     // => 조건이 참이면 표현식1을 실행하고,
     //    조건이 거짓이면 표현식2를 실행한다.
     int age = 20;
     
-    /* 
-    (age > 18) ? System.out.println("성인이다.") : 
-                     System.out.println("미성년자이다.");  //컴파일 오류!
-    */
+     
+    // (age > 18) ? System.out.println("성인이다.") : 
+    //                 System.out.println("미성년자이다.");  //컴파일 오류!
+    
     // 표현식 자리에는 문자가 되었든 숫자가 되었든 
     // 실행 결과가 놓여져야 한다.
     // 위의 System.out.println(...) 문장은 결과를 리턴하지 않는다.
@@ -34,7 +34,7 @@ public class Exam0510 {
 // - statement 중에서 결과를 리턴하는 statement를 expression이라 부른다.
 //
 
-
+// 삼항 연산자 - 피연산자가 세
 
 
 

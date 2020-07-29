@@ -12,8 +12,8 @@ public class Exam0411 {
     int a = -0x7f_ff_ff_fa; // -21_4748_3642
     System.out.println(a);
     System.out.println(a << 1); // 1|0000 0000 0000 0000 0000 0000 0000 1100 = 12
-    System.out.println(a << 2);
-    System.out.println(a << 3);
+    System.out.println(a << 2); //10|0000 0000 0000 0000 0000 0000 0001 1000 = 24
+    System.out.println(a << 3); //                                           = 48
     System.out.println(a << 4);
 
     // 결론!
