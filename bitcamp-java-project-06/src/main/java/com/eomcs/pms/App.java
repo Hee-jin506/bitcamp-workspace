@@ -3,11 +3,16 @@ package com.eomcs.pms;
 import java.sql.Date;
 import java.util.Scanner;
 
-// 1) 명령 프롬프트를 출력한다.
-// 2) 명령어를 입력 받아 출력한다.
+// 1) 회원 데이터를 입력하는 코드를 메서드로 분리한다.
+// 2) 회원 데이터 목록을 출력하는 코드를 메서드로 분리한다.
+// 3) 프로젝트 데이터를 입력하는 코드를 메서드로 분리한다.
+// 4) 프로젝트 데이터 목록을 출력하는 코드를 메서드로 분리한다.
+// 5) 작업 데이터를 입력하는 코드를 메서드로 분리한다.
+// 6) 작업 데이터 목록을 출력하는 코드를 메서드로 분리한다.
 public class App {
   static Scanner keyInput = new Scanner(System.in);
-//회원
+
+  //회원
   static final int LENGTH = 5;
   static int[] no = new int[LENGTH];
   static String[] name = new String[LENGTH];
@@ -16,10 +21,9 @@ public class App {
   static String[] photo = new String[LENGTH];
   static String[] tel = new String[LENGTH];
   static Date[] now = new Date[LENGTH];
-  static long currentMillis;
   static int count = 0;
 
-  // 프로젝트
+//프로젝트
   static final int PLENGTH = 10;
   static int[] pno = new int[PLENGTH];
   static String[] ptitle = new String[PLENGTH];
@@ -30,25 +34,27 @@ public class App {
   static String[] pmembers = new String[PLENGTH];
   static int pcount = 0;
 
-  // 작업
+//작업
   static final int TLENGTH = 100;
 
-  static String[] tproject = new String[TLENGTH];
-  static int[] tno = new int[TLENGTH];
-  static String[] tcontent = new String[TLENGTH];
-  static Date[] tendDate = new Date[TLENGTH];
-  static String[] tstate = new String[TLENGTH];
-  static String[] tworker = new String[TLENGTH];
+  static String[] tproject = new String[LENGTH];
+  static int[] tno = new int[LENGTH];
+  static String[] tcontent = new String[LENGTH];
+  static Date[] tendDate = new Date[LENGTH];
+  static String[] tstate = new String[LENGTH];
+  static String[] tworker = new String[LENGTH];
   static int tcount = 0;
 
   public static void main(String[] args) {
 
-
     loop:
       while (true) {
-        switch (promptString("명령> ").toLowerCase()) {
+        String command = promptString("명령> ");
+
+        switch (command.toLowerCase()) {
           case "/member/add" :
-            addMember();
+            addMember(); // addMember()에 따로 빼낸 코드를 실행하라
+            // 이것을 메서드 호출이라 한다.
             break;
           case "/member/list" :
             listMember();
@@ -80,13 +86,14 @@ public class App {
 
   }
 
+
   static void addMember() {
     System.out.println("[회원 등록]");
 
     no[count] = promptInt("번호? ");
     name[count] = promptString("이름? ");
-    email[count] = promptString("이메일? ");
-    password[count] = promptString("암호? ");
+    email[count] = promptString("이메일? ");;
+    password[count] = promptString("암호? ");;
     photo[count] = promptString("사진? ");
     tel[count] = promptString("전화? ");
     now[count] = new Date(System.currentTimeMillis());
@@ -95,6 +102,7 @@ public class App {
 
   static void listMember() {
     System.out.println("[회원 목록]");
+
     for (int i = 0; i < count; i++) {
       System.out.printf("%d, %s, %s, %s, %s\n",
           no[i], name[i], email[i], tel[i], now[i].toString());
@@ -103,10 +111,12 @@ public class App {
 
   static void addProject() {
     System.out.println("[프로젝트 등록]");
+
+
     pno[pcount] = promptInt("번호? ");
     ptitle[pcount] = promptString("프로젝트명? ");
     pcontent[pcount] = promptString("내용? ");
-    pstartDate[pcount] = promptDate("시작일? ");
+    pstartDate[pcount] =promptDate("시작일? ");
     pendDate[pcount] = promptDate("종료일? ");
     powner[pcount] = promptString("만든이? ");
     pmembers[pcount] = promptString("팀원? ");
@@ -121,8 +131,9 @@ public class App {
       }
   }
 
+
   static void addTask() {
-    System.out.println("[작업 등록]");
+    System.out.println("[프로젝트 등록]");
 
     tproject[tcount] = promptString("프로젝트? ");
     tno[tcount] = promptInt("번호? ");
@@ -149,7 +160,7 @@ public class App {
     for (int i = 0; i < tcount; i++) {
       System.out.printf("%s, %d, %s, %s, %s, %s\n",
           tproject[i], tno[i], tcontent[i], tendDate[i], tstate[i], tworker[i]);
-      }
+    }
   }
 
   static String promptString(String title) {
@@ -164,4 +175,5 @@ public class App {
   static Date promptDate(String title) {
     return Date.valueOf(promptString(title));
   }
+
 }
