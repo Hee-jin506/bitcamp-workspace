@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class Exam0222 {
   public static void main(String[] args) {
     Scanner keyScan = new Scanner(System.in);
-    system.out.println("[지원부서]");
+    System.out.println("[지원부서]");
     System.out.println("1. S/W개발");
     System.out.println("2. 일반관리");
     System.out.println("3. 시설경비");
