@@ -20,7 +20,7 @@ public class Exam0210 {
     char c2 = s2.charAt(1);
     System.out.println(c2);
     
-    System.out.println(s1.compareTo(s2));
+    System.out.println(s1.compareTo("Hellu"));
     
     System.out.println(s1.contains("l"));
     System.out.println(s2.contains("lll"));

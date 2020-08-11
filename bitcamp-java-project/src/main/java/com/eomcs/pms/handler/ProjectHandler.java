@@ -4,6 +4,11 @@ import java.sql.Date;
 import com.eomcs.util.Prompt;
 
 public class ProjectHandler {
+  
+  static final int LENGTH = 100;
+  static int size = 0;
+  static Project[] list = new Project[LENGTH];
+  
   static class Project {
     int no;
     String title;
@@ -14,13 +19,8 @@ public class ProjectHandler {
     String members;
   }
   
-  static final int LENGTH = 100;
-  static Project[] list = new Project[LENGTH];
-  static int size;
-  
   public static void add() {
     System.out.println("[프로젝트 등록]");
-    
     Project p = new Project();
     p.no = Prompt.inputInt("번호? ");
     p.title = Prompt.inputString("프로젝트명? ");
@@ -30,16 +30,15 @@ public class ProjectHandler {
     p.owner = Prompt.inputString("만든이? ");
     p.members = Prompt.inputString("팀원? ");
     list[size++] = p;
-    
   }
   
   public static void list() {
     System.out.println("[프로젝트 목록]");
+    
     for (int i = 0; i < size; i++) {
       Project p = list[i];
       System.out.printf("%d, %s, %s, %s, %s\n", // 출력 형식 지정
           p.no, p.title, p.startDate, p.endDate, p.owner);
     }
   }
-  
 }

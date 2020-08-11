@@ -4,6 +4,11 @@ import java.sql.Date;
 import com.eomcs.util.Prompt;
 
 public class MemberHandler {
+  
+  static final int LENGTH = 100;
+  static int size = 0;
+  static Member[] list = new Member[LENGTH];
+  
   static class Member {
     int no;
     String name;
@@ -14,13 +19,8 @@ public class MemberHandler {
     Date registeredDate;
   }
   
-  static final int LENGTH = 100;
-  static Member[] list = new Member[LENGTH];
-  static int size;
-  
   public static void add() {
     System.out.println("[회원 등록]");
-    
     Member m = new Member();
     m.no = Prompt.inputInt("번호? ");
     m.name = Prompt.inputString("이름? ");
@@ -28,7 +28,7 @@ public class MemberHandler {
     m.password = Prompt.inputString("암호? ");
     m.photo = Prompt.inputString("사진? ");
     m.tel = Prompt.inputString("전화? ");
-    m.registeredDate = new java.sql.Date(System.currentTimeMillis());
+    m.registeredDate = new Date(System.currentTimeMillis());
     list[size++] = m;
   }
   
@@ -41,5 +41,5 @@ public class MemberHandler {
           m.no, m.name, m.email, m.tel, m.registeredDate);
     }
   }
-  
+
 }

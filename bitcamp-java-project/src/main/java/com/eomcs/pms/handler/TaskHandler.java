@@ -4,6 +4,11 @@ import java.sql.Date;
 import com.eomcs.util.Prompt;
 
 public class TaskHandler {
+  
+  static final int LENGTH = 100;
+  static int size = 0;
+  static Task[] list = new Task[LENGTH];
+  
   static class Task {
     int no;
     String content;
@@ -11,10 +16,6 @@ public class TaskHandler {
     String owner;
     int status;
   }
-
-  static final int LENGTH = 100;
-  static Task[] list = new Task[LENGTH];  
-  static int size;
   
   public static void add() {
     System.out.println("[작업 등록]");

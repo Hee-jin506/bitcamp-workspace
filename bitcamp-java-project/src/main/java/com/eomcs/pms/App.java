@@ -6,6 +6,7 @@ import com.eomcs.pms.handler.TaskHandler;
 import com.eomcs.util.Prompt;
 
 public class App {
+  
   public static void main(String[] args) {
     
     loop:
@@ -40,13 +41,6 @@ public class App {
         }
         System.out.println(); // 이전 명령의 실행을 구분하기 위해 빈 줄 출력
       }
-
     Prompt.close();
   }
-  
-
-  
- 
-  
- 
 }

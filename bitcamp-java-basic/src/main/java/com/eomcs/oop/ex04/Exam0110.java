@@ -2,6 +2,9 @@ package com.eomcs.oop.ex04;
 
 import java.util.Calendar;
 import java.util.Date;
+import javax.sound.sampled.AudioFormat.Encoding;
+import com.sun.org.apache.xerces.internal.util.EncodingMap;
+import com.sun.org.apache.xml.internal.serializer.Encodings;
 
 public class Exam0110 {
   public static void main(String[] args) throws Exception {
@@ -85,6 +88,7 @@ public class Exam0110 {
     Car2 car3 = Car2.getInstance();
     Car2 car4 = Car2.getInstance();
     System.out.println(car3 == car4);
+    
   }
   
   
@@ -109,6 +113,8 @@ class Car2 {
       obj = new Car2();
     }
     return obj;
+    
+    
   }
 }
 
