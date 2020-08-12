@@ -4,9 +4,9 @@ public class C4 extends C {
 
   // 오버라이딩 할 때(메서드를 재정의 할 때)
   // => 원본 보다 접근 범위를 좁힐 수는 없다.
-  @Override private void m2() {} // (default) ==> private
-  @Override void m3() {} // protected ==> (default) 
-  @Override protected void m4() {} // public ==> protected
+//  @Override private void m2() {}
+//  @Override void m3() {}
+//  @Override protected void m4() {}
 
 }
 // 멤버의 접근 범위

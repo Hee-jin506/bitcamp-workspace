@@ -6,11 +6,10 @@ public class Exam0130 {
     A3 obj1 = new A3();
     obj1.name = "홍길동";
     obj1.age = 20;
-
-    // A3 클래스에서 A 클래스의 print() 메서드를 재정의 했기 때문에
-    // 다음 호출하는 메서드는 A3의 print() 메서드가 된다.
-    obj1.print(); // A2에서 재정의한 print() 호출
+    
+    obj1.print();
   }
+  
 }
 
 // 오버라이딩(overrding)?
