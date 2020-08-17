@@ -25,6 +25,8 @@ public class Exam0320 {
     Member s2 = new Member("임꺽정", 30);
     Member s3 = new Member("유관순", 16);
     Member s4 = new Member("임꺽정", 30);
+    
+    System.out.println(s2.equals(s4));
 
     ArrayList list = new ArrayList();
     list.add(s1);

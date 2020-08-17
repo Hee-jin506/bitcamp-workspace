@@ -8,9 +8,8 @@ public class Exam0180 {
     
     String s2 = new String("Hello");
     System.out.printf("s2=%s\n", s2);
-    
-    char[] chars = {'H', 'e', 'l', 'l', 'o'};
-    String s3 = new String(chars);
+
+    String s3 = new String(new char[] {'H', 'e', 'l', 'l', 'o'});
     System.out.printf("s3=%s\n", s3);
     
     byte[] bytes =

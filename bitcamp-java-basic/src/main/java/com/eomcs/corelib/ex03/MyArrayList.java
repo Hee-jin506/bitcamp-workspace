@@ -1,15 +1,29 @@
 package com.eomcs.corelib.ex03;
 
+import java.util.Arrays;
+
 public class MyArrayList {
-  private Object[] list = new Object[5];
+  Object[] list;
   private int size;
+  final int DEFAULT_CAPACITY = 5;
   
-  void add(Object obj) {
+  public MyArrayList() {
+    list = new Object[DEFAULT_CAPACITY];
+  }
+  
+  public MyArrayList(int initialCapacity) {
+    if (initialCapacity < DEFAULT_CAPACITY) {
+      list = new Object[DEFAULT_CAPACITY];
+    } else {
+      list = new Object[initialCapacity];       
+    }
+  }
+  boolean add(Object obj) {
     if (size == list.length) {
       grow();
     }
-    list[size] = obj;
-    size++;
+    list[size++] = obj;
+    return true;
   }
   
   void add(int index, Object obj) {
@@ -47,23 +61,43 @@ public class MyArrayList {
     if (index < 0 || index >= size) {
       throw new ArrayIndexOutOfBoundsException("인덱스가 유효하지 않습니다.");
     }
-    for (int i = index; i < size - 1; i++) {
-      list[index] = list[index + 1];
-    }
+    
+    System.arraycopy(
+        list, // 복사 대상 
+        index + 1, // 복사할 항목의 시작 인덱스
+        list, // 목적지
+        index, // 복사 목적지 인덱스
+        this.size - (index + 1)); // 복사할 인덱스 길이
+//    for (int i = index; i < size - 1; i++) {
+//      list[index] = list[index + 1];
+//    }
     size--;
     list[size] = null;
     return old;
   }
   
-  void grow() {
-    Object[] newList = new Object[list.length + (list.length >> 2)];
-    for (int i = 0; i < list.length; i++) {
-      newList[i] = list[i];
-    }
-    list = newList;
+  private void grow() {
+    int newCapacity = list.length + (list.length >> 1);
+    list = Arrays.copyOf(list, newCapacity);
+//    Object[] newList = new Object[list.length + (list.length >> 1)];
+//    for (int i = 0; i < list.length; i++) {
+//      newList[i] = list[i];
+//    }
+//    list = newList;
   }
   
   int size() {
     return size;
+  }
+  
+  public Object[] toArray() {
+    Object[] arr = Arrays.copyOf(list, this.size);
+    // System.out.println(list == arr);
+    return arr;
+//    Object[] arr = new Object[this.size];
+//    for (int i = 0; i < arr.length; i++) {
+//      arr[i] = list[i];
+//    }
+//    return arr;
   }
 }

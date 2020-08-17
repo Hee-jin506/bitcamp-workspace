@@ -1,6 +1,8 @@
 // LinkedList 구현과 사용
 package com.eomcs.corelib.ex04;
 
+import java.util.LinkedList;
+
 public class Exam0110 {
 
   public static void main(String[] args) {

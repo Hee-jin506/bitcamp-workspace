@@ -1,6 +1,8 @@
 // contains() 와 equals()의 관계
 package com.eomcs.corelib.ex03;
 
+import java.util.ArrayList;
+
 public class Exam0210 {
   public static void main(String[] args) {
     String s1 = new String("aaa");

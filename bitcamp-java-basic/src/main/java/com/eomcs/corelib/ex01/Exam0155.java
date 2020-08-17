@@ -12,11 +12,11 @@ public class Exam0155 {
     String k4 = new String("ohora");
     String k5 = new String("hul");
     
-    map.put(k1, new Student("홍길동", 20, false));
-    map.put(k2, new Student("임꺽정", 30, true));
-    map.put(k3, new Student("유관순", 17, true));
-    map.put(k4, new Student("안중근", 24, true));
-    map.put(k5, new Student("윤봉길", 22, false));
+    map.put("ok", new Student("홍길동", 20, false));
+    map.put("no", new Student("임꺽정", 30, true));
+    map.put("haha", new Student("유관순", 17, true));
+    map.put("ohora", new Student("안중근", 24, true));
+    map.put("hul", new Student("윤봉길", 22, false));
     
     System.out.println(map.get(k3));
     

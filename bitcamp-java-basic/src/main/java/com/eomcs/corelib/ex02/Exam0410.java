@@ -8,6 +8,11 @@ public class Exam0410 {
     
     c1 = Calendar.getInstance();
     System.out.println(c1.get(Calendar.YEAR));
+    
+    
+    Calendar c2;
+    c2 = Calendar.getInstance();
+    System.out.println(c1 == c2);
   }
 
 }

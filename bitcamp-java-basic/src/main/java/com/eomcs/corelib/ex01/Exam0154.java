@@ -11,7 +11,7 @@ public class Exam0154 {
     Integer k3 = new Integer(103);
     
     map.put(k1, new Student("홍길동", 20, false));
-    map.put(k2, new Student("임꺽정", 30, false));
+    map.put(102, new Student("임꺽정", 30, false));
     map.put(k3, new Student("유관순", 17, true));
     
     map.put(104, new Student("안중근", 24, true));
@@ -21,7 +21,7 @@ public class Exam0154 {
     
     Integer k6 = new Integer(102);
     
-    System.out.println(map.get(k6));
+    System.out.println(map.get(102));
     
     System.out.println(k2 == k6);
     
