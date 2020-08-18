@@ -1,22 +1,20 @@
-// java.util.HashMap - 사용자 정의 데이터 타입을 key로 사용할 경우
 package com.eomcs.corelib.ex08;
 
 import java.util.HashMap;
 
 public class Exam0150 {
-
   static class MyKey {
     String major;
     int no;
-
-    public MyKey(String major, int no) {
+    
+    public MyKey(String name, int no) {
       this.major = major;
       this.no = no;
     }
-
+    
     @Override
     public String toString() {
-      return "MyKey [major=" + major + ", no=" + no + "]";
+      return "MyKey [major=" + major + ", no=" + no +"]";
     }
 
     @Override
@@ -46,8 +44,9 @@ public class Exam0150 {
         return false;
       return true;
     }
+    
+   
   }
-
   public static void main(String[] args) {
     Member v1 = new Member("홍길동", 20);
     Member v2 = new Member("임꺽정", 30);
@@ -84,18 +83,8 @@ public class Exam0150 {
     System.out.printf("hashCode(): %d, %d\n", k3.hashCode(), k6.hashCode());
     System.out.println("-----------------------------------");
 
+    // hashCode()의 리턴 값이 같다고 해서 같은 key로 간주하지 않는다.
     System.out.println(map.get(k6));
-    // k3와 k6는 인스턴스가 다르더라도
-    // hashCode()의 리턴 값이 같고, equals()의 결과가 true이기 때문에
-    // 같은 key로 간주한다.
-    //
-    // 결론!
-    // - HashMap의 key 객체로 사용할 클래스는 반드시 hashCode()와 equals()를
-    // 오버라이딩 하여 같은 값을 갖는 경우 같은 해시 값을 리턴하게 하라!
-    // - 대부분 현업에서는 그냥 String을 key로 사용한다.
-    // 또는 Wrapper 클래스인 Integer를 사용하기도 한다.
+
   }
-
 }
-
-

@@ -1,12 +1,13 @@
 package com.eomcs.corelib.ex01;
 
 public class Exam0161 {
+  static class Member {}
   public static void main(String[] args) {
     String obj1 = new String();
     Class<?> classInfo = obj1.getClass();
     System.out.println(classInfo.getName());
     
-    String[] obj2 = new String[10];
+    Member[] obj2 = new Member[10];
     classInfo = obj2.getClass();
     System.out.println(classInfo.getName());
     
