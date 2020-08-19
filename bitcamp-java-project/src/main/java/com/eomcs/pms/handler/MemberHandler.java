@@ -1,27 +1,19 @@
 package com.eomcs.pms.handler;
 
-import java.sql.Date;
+import com.eomcs.pms.domain.Member;
 import com.eomcs.util.Prompt;
 
 public class MemberHandler {
-
-  // 회원 데이터
-  static class Member {
-    int no;
-    String name;
-    String email;
-    String password;
-    String photo;
-    String tel;
-    Date registeredDate;
-  }
   
-  static final int LENGTH = 100;
-  static Member[] list = new Member[LENGTH]; // list로 이름을 바꾼다.
-  static int size = 0;
+  MemberList memberList = new MemberList();
+  public String type;
+  
+  public MemberHandler(String type) {
+    this.type = type;
+  }
 
   // 다른 패키지에서 이 메서드를 사용할 수 있도록 public 으로 사용 범위를 공개한다.
-  public static void add() {
+  public void add() {
     System.out.println("[회원 등록]");
     
     Member member = new Member();
@@ -33,14 +25,14 @@ public class MemberHandler {
     member.tel = Prompt.inputString("전화? ");
     member.registeredDate = new java.sql.Date(System.currentTimeMillis());
     
-    list[size++] = member;
+    memberList.add(member);
   }
   
-  public static void list() {
+  public void list() {
     System.out.println("[회원 목록]");
     
-    for (int i = 0; i < size; i++) {
-      Member member = list[i];
+    Member[] members = memberList.toArray();
+    for (Member member : members) {
       System.out.printf("%d, %s, %s, %s, %s\n",
           member.no, 
           member.name, 
@@ -50,11 +42,12 @@ public class MemberHandler {
     }
   }
   
-  public static String findByName(String name) {
-    for (int i = 0; i < size; i++) {
-      if (list[i].name.equals(name)) {
-        return name;
-      } 
+  public Member findByName(String name) {
+    Member[] members = memberList.toArray();
+    for (Member member : members) {
+      if (member.name.equals(name)) {
+        return member;
+      }
     }
     return null;
   }
