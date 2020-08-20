@@ -7,7 +7,7 @@ public class BoardHandler {
   
   BoardList boardList = new BoardList();
   MemberHandler memberHandler;
-  String type;
+  public String type;
   
   public BoardHandler(String type, MemberHandler memberHandler) {
     this.type = type;

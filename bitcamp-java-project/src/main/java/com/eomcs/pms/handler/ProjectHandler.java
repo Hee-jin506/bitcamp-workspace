@@ -7,7 +7,7 @@ public class ProjectHandler {
   
   ProjectList projectList = new ProjectList();
   MemberHandler memberHandler;
-  String type;
+  public String type;
   
   
   public ProjectHandler(String type, MemberHandler memberHandler) {

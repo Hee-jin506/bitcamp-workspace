@@ -1,21 +1,14 @@
 package com.eomcs.pms;
 
-import com.eomcs.pms.handler.BoardHandler;
-import com.eomcs.pms.handler.MemberHandler;
-import com.eomcs.pms.handler.ProjectHandler;
-import com.eomcs.pms.handler.TaskHandler;
+
+import com.eomcs.pms.handler.TypeHandler;
 import com.eomcs.util.Prompt;
 
 // 1) `Prompt` 클래스를 별도의 패키지로 분류한다
 // 2) 핸들러 클래스들을 별도의 패키지로 분류한다
 public class App {
   
-  static final int LENGTH = 100;
-  static MemberHandler[] memberHandlers = new MemberHandler[LENGTH];
-  static ProjectHandler[] projectHandlers = new ProjectHandler[LENGTH];
-  static TaskHandler[] taskHandlers = new TaskHandler[LENGTH];
-  static BoardHandler[] boardHandlers = new BoardHandler[LENGTH];
-  static int msize, psize, tsize, bsize;
+  
 
   public static void main(String[] args) {
     
@@ -24,41 +17,41 @@ public class App {
         String command = Prompt.inputString("명령> ");
 
         switch (command) {
-          case "멤버 종류 새로 추가":
-            memberHandlers[msize++] = new MemberHandler(Prompt.inputString("새로 추가할 멤버 종류를 입력하세요. "));
+          case "멤버 종류 추가":
+            TypeHandler.addMemberType();
             break;
-          case "프로젝트 종류 새로 추가":
-            String type = Prompt.inputString("새로 추가할 프로젝트 종류를 입력하세요. ");
-            String member = Prompt.inputString("작성을 허가할 멤버 종류를 입력하세요. ");
-            
+          case "프로젝트 종류 추가":
+            TypeHandler.addProjectType();
             break;
           case "게시판 추가":
+            TypeHandler.addBoardType();
             break;
-          case "작업 종류 새로 추가":
+          case "작업 종류 추가":
+            TypeHandler.addTaskType();
             break;
           case "/member/add":
-            memberHandler.add();
+            TypeHandler.mchoose().add();
             break;
           case "/member/list":
-            memberHandler.list();
+            TypeHandler.mchoose().list();
             break;
           case "/project/add":
-            projectHandler.add();
+            TypeHandler.pchoose().add();
             break;
           case "/project/list":
-            projectHandler.list();
+            TypeHandler.pchoose().list();
             break;
           case "/task/add":
-            taskHandler.add();
+            TypeHandler.tchoose().add();
             break;
           case "/task/list":
-            taskHandler.list();
+            TypeHandler.tchoose().list();
             break;
           case "/board/add":
-            boardHandler.add();
+            TypeHandler.bchoose().add();
             break;
           case "/board/list":
-            boardHandler.list();
+            TypeHandler.bchoose().list();
             break;
           case "quit":
           case "exit":
@@ -73,12 +66,6 @@ public class App {
     Prompt.close();
   }
   
-  static MemberHandler mchoose(String type) {
-    for (MemberHandler memberHandler : memberHandlers) {
-      if (memberHandler.type.equals(type)) {
-        return memberHandler;
-      }
-    }
-    return null;
-  }
+  
+
 }

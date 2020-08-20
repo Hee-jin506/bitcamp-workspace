@@ -7,7 +7,7 @@ public class TaskHandler {
   
   TaskList taskList = new TaskList();
   MemberHandler memberHandler;
-  String type;
+  public String type;
   
   public TaskHandler(String type, MemberHandler memberHandler) {
     this.type = type;
