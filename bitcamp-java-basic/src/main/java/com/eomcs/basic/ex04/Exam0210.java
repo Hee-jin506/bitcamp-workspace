@@ -11,6 +11,7 @@ public class Exam0210 {
     height = 200;
     
     int score;
+    
     score = 100;
   }
 

@@ -3,6 +3,7 @@ package com.eomcs.basic.ex04;
 public class Exam0521 {
   public static void main(String[] args) {
     int a1, a2, a3, a4, a5;
+    
     a1 = 100;
     a2 = 90;
     a3 = 80;
@@ -10,6 +11,7 @@ public class Exam0521 {
     a5 = 60;
     
     int sum1 = a1 + a2 + a3 + a4 + a5;
+    System.out.println(sum1);
     
     int[] arr1;
     arr1 = new int[5];
@@ -21,7 +23,9 @@ public class Exam0521 {
     
     int sum2 = 0;
     for (int item : arr1) {
-      sum2 =sum2 + item;
+      sum2 = sum2 + item;
     }
+    System.out.println(sum2);
   }
+
 }

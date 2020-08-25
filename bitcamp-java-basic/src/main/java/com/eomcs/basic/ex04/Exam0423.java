@@ -8,7 +8,7 @@ public class Exam0423 {
     f = 9999.888f;
     System.out.println(f);
     
-    d = 99999999.888888;
+    d = 99999999.8888888;
     System.out.println(d);
   }
 

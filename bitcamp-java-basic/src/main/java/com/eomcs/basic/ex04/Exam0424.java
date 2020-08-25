@@ -16,6 +16,9 @@ public class Exam0424 {
     
     d = 99999.8888877777;
     System.out.println(d);
+    
+    d = 99999.88f;
+    System.out.println(d);
   }
 
 }

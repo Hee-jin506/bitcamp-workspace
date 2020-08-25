@@ -4,7 +4,10 @@ public class Exam0551 {
   public static void main(String[] args) {
     int[] arr1;
     arr1 = new int[5];
+    
     arr1 = null;
-    // System.out.println(arr1[0]); // 실행오류 
+    
+    System.out.println(arr1[0]);
   }
+
 }

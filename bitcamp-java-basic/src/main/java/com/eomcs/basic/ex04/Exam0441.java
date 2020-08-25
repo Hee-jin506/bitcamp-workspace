@@ -10,8 +10,8 @@ public class Exam0441 {
     System.out.println(b1);
     System.out.println(b2);
     
-    // b1 = 1;
-    // b2 = 0;
+//    b1 = 1;
+//    b2 = 0;
   }
 
 }

@@ -3,6 +3,7 @@ package com.eomcs.basic.ex04;
 public class Exam0560 {
   public static void main(String[] args) {
     int v;
+    
     // System.out.println(v);
     
     int[] arr1 = new int[5];

@@ -18,15 +18,12 @@ public class Exam0940 {
     
     int i2 = 0b0000_0000_0000_0000_0000_0001_0010_1100;
     b2 = (byte) i2;
-    System.out.println(b2); // 0b0010_1100
+    System.out.println(b2);
     
-    l = 400_0000_0000L; // 0x00_00_00_09_50_2f_90_00
+    l = 400_0000_0000L;
     i = (int)l;
     System.out.println(i);
     System.out.println(0x502f9000);
   }
-  
-  
-  
 
 }

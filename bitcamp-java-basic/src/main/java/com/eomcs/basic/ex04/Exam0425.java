@@ -14,6 +14,7 @@ public class Exam0425 {
     double d1 = 99988.88;
     double d2 = 11.11111;
     double d3 = d1 + d2;
+    
     System.out.println(d3);
   }
 

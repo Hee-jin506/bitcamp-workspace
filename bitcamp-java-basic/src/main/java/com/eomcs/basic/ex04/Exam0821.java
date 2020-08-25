@@ -5,7 +5,7 @@ public class Exam0821 {
     int a = 100;
     
     for (int i = 0; i < 10; i++) {
-      // int a; // 컴파일 오
+     // int a;
       int b;
     }
   }

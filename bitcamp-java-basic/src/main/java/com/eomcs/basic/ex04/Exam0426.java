@@ -7,7 +7,7 @@ public class Exam0426 {
     
     d = 3.14;
     
-    // f = d; // 컴파일 에러 
+    // f = d;
   }
 
 }

@@ -5,7 +5,7 @@ public class Exam0434 {
     int a = 0x41;
     
     for (int i = 0; i < 26; i++) {
-      System.out.println((char)(a + i));
+      System.out.println((char) (a + i));
     }
   }
 

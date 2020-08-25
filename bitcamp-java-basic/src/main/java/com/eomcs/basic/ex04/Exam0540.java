@@ -4,8 +4,11 @@ public class Exam0540 {
   public static void main(String[] args) {
     int[] arr1;
     
+    // arr1[0] = 100;
     arr1 = new int[5];
     arr1[0] = 100;
+    
     System.out.println(arr1[0]);
   }
+
 }
