@@ -5,13 +5,13 @@ public class Exam0141 {
     int age = 17;
     
     // else
-    //   System.out.println("컴파일 오류")
+    //   System.out.println("컴파일 오류!");
     
     // if (age >= 19)
-    //   System.oout.println("성인입니다.");
-    // System.out.println("--------------");
+    //   System.out.println("성인입니다.");
+    // System.out.println("--------------------");
     // else
-    //  System.out.println("미성년입니다.");
+    //   System.out.println("미성년입니다.");
   }
 
 }

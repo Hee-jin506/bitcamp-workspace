@@ -4,7 +4,7 @@ public class Exam0110 {
   public static void main(String[] args) {
     int age = 17;
     
-    if (age >=  19) System.out.println("성인이다.");
+    if (age >= 19) System.out.println("성인이다.");
     
     if (age >= 19);
     System.out.println("성인이다.");
@@ -14,7 +14,9 @@ public class Exam0110 {
         19) System
     .
     out.
-    println("성인이다.");
+    println(
+        "성인이다.")
+    ;
   }
 
 }

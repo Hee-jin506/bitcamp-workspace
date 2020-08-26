@@ -6,18 +6,17 @@ public class Exam0120 {
     
     if (age >= 19)
       System.out.println("성인이다.");
-      System.out.println("군대 가야한다.");
-      System.out.println("일해야 한다.");
-      System.out.println("세금 납부해야한다.");
-      
-    System.out.println("-------------------");
-    
-    if (age >= 19) {
-      System.out.println("성인이다.");
-      System.out.println("군대 가야한다.");
+      System.out.println("군대");
       System.out.println("일해야한다.");
-      System.out.println("세금 납부해야한다.");
-    }
+      System.out.println("세금 납부");
+      
+      System.out.println("-----------------");
+      
+    if (age <= 19)
+      System.out.println("성인이다.");
+      System.out.println("군대");
+      System.out.println("일해야한다.");
+      System.out.println("세금 납부");
   }
 
 }
