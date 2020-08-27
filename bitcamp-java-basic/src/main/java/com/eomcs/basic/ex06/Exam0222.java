@@ -2,7 +2,7 @@ package com.eomcs.basic.ex06;
 
 import java.util.Scanner;
 
-public class Exam0221 {
+public class Exam0222 {
   public static void main(String[] args) {
     Scanner keyScan = new Scanner(System.in);
     System.out.println("[지원부서]");
@@ -16,13 +16,8 @@ public class Exam0221 {
     switch (no) {
       case 1:
         System.out.println("정보처리자격증");
-        System.out.println("졸업증명서");
-        System.out.println("이력서");
-        break;
       case 2:
         System.out.println("졸업증명서");
-        System.out.println("이력서");
-        break;
       case 3:
         System.out.println("이력서");
         break;
