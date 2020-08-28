@@ -3,6 +3,7 @@ package com.eomcs.oop.ex03;
 import java.util.Scanner;
 
 public class Exam0320 {
+  
   static class Score {
     String name;
     int kor;
@@ -16,17 +17,18 @@ public class Exam0320 {
       this.average = this.sum / 3f;
     }
   }
+  
   public static void main(String[] args) {
     Scanner keyScan = new Scanner(System.in);
     
-    System.out.print("성적 데이터를 입력하세요(예: 홍길동 100 100 100)> ");
+    System.out.println("성적 데이터를 입력하세요(예: 홍길동 100 100 100)> ");
     Score s1 = new Score();
     s1.name = keyScan.next();
     s1.kor = keyScan.nextInt();
     s1.eng = keyScan.nextInt();
     s1.math = keyScan.nextInt();
     
-    System.out.print("성적 데이터를 입력하세요(예: 홍길동 100 100 100)> ");
+    System.out.println("성적 데이터를 입력하세(예: 홍길동 100 100 100)> ");
     Score s2 = new Score();
     s2.name = keyScan.next();
     s2.kor = keyScan.nextInt();
@@ -41,4 +43,5 @@ public class Exam0320 {
     System.out.printf("%s, %d, %d, %d, %d, %.1f\n",
         s2.name, s2.kor, s2.eng, s2.math, s2.sum, s2.average);
   }
+
 }

@@ -4,7 +4,7 @@ public class Exam0161 {
   static class Member {
     String id;
     String password;
-    int type;
+    int type;    
   }
   
   public static void main(String[] args) {
@@ -27,5 +27,4 @@ public class Exam0161 {
     m6.password = "1111";
     m6.type = MEMBER;
   }
-
 }

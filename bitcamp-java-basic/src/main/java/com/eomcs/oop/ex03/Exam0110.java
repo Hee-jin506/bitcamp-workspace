@@ -15,7 +15,7 @@ public class Exam0110 {
     obj2.v1 = 200;
     obj3.v1 = 300;
     
-    System.out.printf("%d, %d, %d\n", obj1.v1, obj2.v1, obj3.v1);
+    System.out.printf("%d, %d, %d", obj1.v1, obj2.v1, obj3.v1 );
   }
 
 }

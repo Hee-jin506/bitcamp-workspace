@@ -3,6 +3,7 @@ package com.eomcs.oop.ex03;
 import java.sql.Date;
 
 public class Exam0510 {
+  
   static class A {
     static byte b;
     static short s;
@@ -17,10 +18,8 @@ public class Exam0510 {
   }
   
   public static void main(String[] args) {
-    System.out.printf("%d, %d, %d, %d, %c, %.1f, %.1f, %b, %s, %s\n",
-        A.b, A.s, A.i, A.l, A.c, A.f, A.d, A.bool, A.str, A.date);
-    int a;
-    // System.out.println(a); // 로컬 변수 초기화 안됨.
+    System.out.printf("%d, %d, %d, %d, %c, %.1f, %.1f, %b, %s, %s\n", A.b, A.s, A.i, A.l, A.c, A.f,
+        A.d, A.bool, A.str, A.date);
   }
 
 }

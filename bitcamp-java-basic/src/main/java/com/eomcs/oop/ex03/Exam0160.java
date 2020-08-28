@@ -1,6 +1,7 @@
 package com.eomcs.oop.ex03;
 
 public class Exam0160 {
+  
   static class Member {
     String id;
     String password;
@@ -16,7 +17,7 @@ public class Exam0160 {
     Member m2 = new Member();
     m2.id = "bbb";
     m2.password = "1111";
-    m2.type =2;
+    m2.type = 2;
     
     Member m3 = new Member();
     m3.id = "ccc";

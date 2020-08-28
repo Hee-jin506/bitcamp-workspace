@@ -5,10 +5,13 @@ class X {
     System.out.println("X()");
   }
 }
+
 public class Exam0450 {
   public static void main(String[] args) {
     X obj1;
-    // X obj1 = new X();
+    
+   // X obj2 = new X();
   }
   
+
 }

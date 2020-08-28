@@ -28,7 +28,7 @@ public class Exam0120 {
     s2.math = 100;
     s2.sum = s2.kor + s2.eng + s2.math;
     s2.average = s2.sum / 3f;
-    
+
     s3.name = "유관순";
     s3.kor = 100;
     s3.eng = 90;
