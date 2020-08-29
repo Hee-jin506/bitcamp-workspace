@@ -1,6 +1,6 @@
 package com.eomcs.oop.ex03;
 
-public class Exam0610 {
+public class Exam0640 {
   
   public static class A {
     static int a;
@@ -17,9 +17,9 @@ public class Exam0610 {
   }
   
   public static void main(String[] args) throws Exception {
-    A obj1;
-    A obj2;
+    new A();
     
     System.out.println("종료!");
   }
+
 }

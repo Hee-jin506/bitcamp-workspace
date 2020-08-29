@@ -1,6 +1,7 @@
 package com.eomcs.corelib.ex01;
 
 public class Exam0131 {
+  
   public static void main(String[] args) {
     My obj1 = new My();
     obj1.name = "홍길동";
@@ -17,10 +18,9 @@ public class Exam0131 {
     obj2.email = "hong@test.com";
     obj2.gender = 1;
     obj2.working = false;
-        
+    
     System.out.println(obj1 == obj2);
     System.out.println(obj1.equals(obj2));
-    
   }
   
   static class My {
@@ -36,14 +36,15 @@ public class Exam0131 {
       if (this == obj)
         return true;
       if (obj == null)
-      return false;
+        return false;
       if (getClass() != obj.getClass())
         return false;
       My other = (My) obj;
       if (age != other.age)
         return false;
       if (email == null) {
-        return false;
+        if (other.email != null)
+          return false;
       } else if (!email.equals(other.email))
         return false;
       if (gender != other.gender)
@@ -51,7 +52,7 @@ public class Exam0131 {
       if (name == null) {
         if (other.name != null)
           return false;
-      } else if (!name.contentEquals(other.name))
+      } else if (!name.equals(other.name))
         return false;
       if (tel == null) {
         if (other.tel != null)
@@ -61,7 +62,8 @@ public class Exam0131 {
       if (working != other.working)
         return false;
       return true;
-    }
+  }
+  
   }
 
 }

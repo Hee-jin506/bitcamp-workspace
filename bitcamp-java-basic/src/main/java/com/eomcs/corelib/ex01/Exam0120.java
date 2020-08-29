@@ -1,13 +1,17 @@
 package com.eomcs.corelib.ex01;
 
 public class Exam0120 {
+  
   static class My {
     
   }
+  
   public static void main(String[] args) {
     My obj = new My();
     
     System.out.println(obj.toString());
+    
+    System.out.println(obj);
     
     My obj2 = new My();
     My obj3 = new My();

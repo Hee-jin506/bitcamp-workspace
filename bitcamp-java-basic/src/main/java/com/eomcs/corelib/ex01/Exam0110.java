@@ -1,13 +1,15 @@
 package com.eomcs.corelib.ex01;
 
 public class Exam0110 {
-  static class My {
-    
+  
+  static class My /* extends Object*/ {
   }
   
   public static void main(String[] args) {
-    My obj = new My();
+    Object obj = new My();
+    
     System.out.println(obj instanceof My);
+    System.out.println(obj instanceof String);
     System.out.println(obj instanceof Object);
     
     System.out.println(obj.toString());

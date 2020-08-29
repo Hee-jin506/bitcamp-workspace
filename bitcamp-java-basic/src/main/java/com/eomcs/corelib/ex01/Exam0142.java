@@ -10,15 +10,27 @@ public class Exam0142 {
     obj2.name = "홍길동";
     obj2.age = 20;
     
-    System.out.println((obj1 == obj2));
+    System.out.println(obj1 == obj2);
     System.out.println(obj1.equals(obj2));
     
     System.out.println(Integer.toHexString(obj1.hashCode()));
     System.out.println(Integer.toHexString(obj2.hashCode()));
     
+    System.out.println(obj1);
+    System.out.println(obj2);
   }
   
   static class My {
+    String name;
+    int age;
+    @Override
+    public int hashCode() {
+      final int prime = 31;
+      int result = 1;
+      result = prime * result + age;
+      result = prime * result + ((name == null) ? 0 : name.hashCode());
+      return result;
+    }
     @Override
     public boolean equals(Object obj) {
       if (this == obj)
@@ -37,20 +49,8 @@ public class Exam0142 {
         return false;
       return true;
     }
+    
 
-    String name;
-    int age;
-    
-    @Override
-    public int hashCode() {
-      final int prime = 31;
-      int result = 1;
-      result = prime * result + age;
-      result = prime * result + ((name == null) ? 0 : name.hashCode());
-      return result;
-    }
-    
-    
   }
 
 }

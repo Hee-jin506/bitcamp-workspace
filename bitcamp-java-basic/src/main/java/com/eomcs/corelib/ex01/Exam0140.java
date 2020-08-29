@@ -1,6 +1,7 @@
 package com.eomcs.corelib.ex01;
 
 public class Exam0140 {
+  
   static class My {
     String name;
     int age;

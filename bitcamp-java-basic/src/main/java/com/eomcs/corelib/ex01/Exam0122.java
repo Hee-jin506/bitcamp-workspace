@@ -1,7 +1,8 @@
+// Object 클래스의 메서드를 오버라이딩 하기 - toString()
 package com.eomcs.corelib.ex01;
 
-public class Exam0122 {
-  static class Score {
+public class Exam0122 extends Object {
+  static class Score /* extends Object*/ {
     String name;
     int kor;
     int eng;
@@ -23,8 +24,6 @@ public class Exam0122 {
     Score s1 = new Score("홍길동", 100, 100, 100);
     
     String str = s1.toString();
-    
     System.out.println(str);
   }
-
 }

@@ -8,7 +8,7 @@ public class Exam0141 {
     
     @Override
     public int hashCode() {
-      String str = String.format("%s,%d", this.name, this.age);
+      String str = String.format("%s, %d", this.name, this.age);
       return str.hashCode();
     }
   }
@@ -30,7 +30,6 @@ public class Exam0141 {
     
     System.out.println(obj1);
     System.out.println(obj2);
-    
   }
 
 }

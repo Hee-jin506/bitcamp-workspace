@@ -1,7 +1,8 @@
 package com.eomcs.corelib.ex01;
 
 public class Exam0132 {
-  static class Member {
+  
+  static class Member /*extends Object*/ {
     String name;
     int age;
     
@@ -16,15 +17,14 @@ public class Exam0132 {
     Member m2 = new Member("홍길동", 20);
     
     System.out.println(m1 == m2);
-    System.out.println(m1.equals(m2));
     
-    System.out.println("--------------------");
+    System.out.println(m1.equals(m2));
+    System.out.println("--------------");
     
     String s1 = new String("Hello");
     String s2 = new String("Hello");
     
-    System.out.println(s1 == s2);
-    System.out.println(s1.contentEquals(s2));
-    
+    System.out.println(s1.equals(s2));
   }
+
 }
