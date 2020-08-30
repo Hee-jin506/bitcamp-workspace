@@ -5,50 +5,42 @@ import com.eomcs.util.Prompt;
 
 public class MemberHandler {
   
-  MemberList memberList = new MemberList();
-  public String type;
+  private static final int LENGTH = 100;
+  private Member[] list = new Member[LENGTH];
+  private int size = 0;
   
-  public MemberHandler(String type) {
-    this.type = type;
-  }
-
-  // 다른 패키지에서 이 메서드를 사용할 수 있도록 public 으로 사용 범위를 공개한다.
   public void add() {
-    System.out.println("[회원 등록]");
+    Member m = new Member();
+    System.out.println("[회원 추가]");
+    m.no = Prompt.promptInt("번호? ");
+    m.name = Prompt.promptString("이름? ");
+    m.email = Prompt.promptString("이메일? ");
+    m.password = Prompt.promptString("암호? ");
+    m.photo = Prompt.promptString("사진? ");
+    m.tel = Prompt.promptString("전화? ");
+    m.registeredDate = new java.sql.Date(System.currentTimeMillis());
     
-    Member member = new Member();
-    member.no = Prompt.inputInt("번호? ");
-    member.name = Prompt.inputString("이름? ");
-    member.email = Prompt.inputString("이메일? ");
-    member.password = Prompt.inputString("암호? ");
-    member.photo = Prompt.inputString("사진? ");
-    member.tel = Prompt.inputString("전화? ");
-    member.registeredDate = new java.sql.Date(System.currentTimeMillis());
-    
-    memberList.add(member);
+    list[size] = m;
+    size++;
   }
   
   public void list() {
     System.out.println("[회원 목록]");
-    
-    Member[] members = memberList.toArray();
-    for (Member member : members) {
-      System.out.printf("%d, %s, %s, %s, %s\n",
-          member.no, 
-          member.name, 
-          member.email, 
-          member.tel, 
-          member.registeredDate);
+    for (int i = 0; i < size; i++) {
+      // 번호, 이름, 이메일, 전화, 가입일
+      Member m = list[i];
+      System.out.printf("%d, %s, %s, %s, %s\n", // 출력 형식 지정
+          m.no, m.name, m.email, m.tel, m.registeredDate);
     }
   }
   
   public Member findByName(String name) {
-    Member[] members = memberList.toArray();
-    for (Member member : members) {
-      if (member.name.equals(name)) {
-        return member;
+    for (int i = 0; i < size; i++) {
+      if (list[i].name.equals(name)) {
+        return list[i];
       }
     }
     return null;
   }
+  
 }

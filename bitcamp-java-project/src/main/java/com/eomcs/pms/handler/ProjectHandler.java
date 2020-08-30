@@ -5,73 +5,58 @@ import com.eomcs.util.Prompt;
 
 public class ProjectHandler {
   
-  ProjectList projectList = new ProjectList();
-  MemberHandler memberHandler;
-  public String type;
+  private static final int LENGTH = 100;
+  private Project[] list = new Project[LENGTH];
+  private int size = 0;
+  private MemberHandler memberHandler;
   
-  
-  public ProjectHandler(String type, MemberHandler memberHandler) {
-    this.type = type;
+  public ProjectHandler(MemberHandler memberHandler) {
     this.memberHandler = memberHandler;
   }
-
-  //다른 패키지에서 이 메서드를 사용할 수 있도록 public 으로 사용 범위를 공개한다.
+  
   public void add() {
-    System.out.println("[프로젝트 등록]");
-    
-    Project project = new Project();
-    project.no = Prompt.inputInt("번호? ");
-    project.title = Prompt.inputString("프로젝트명? ");
-    project.content = Prompt.inputString("내용? ");
-    project.startDate = Prompt.inputDate("시작일? ");
-    project.endDate = Prompt.inputDate("종료일? ");
-    
+    Project p = new Project();
+    System.out.println("[프로젝트 추가]");
+    p.no = Prompt.promptInt("번호? ");
+    p.title = Prompt.promptString("프로젝트명? ");
+    p.content = Prompt.promptString("내용? ");
+    p.startDate = Prompt.promptDate("시작일? ");
+    p.endDate = Prompt.promptDate("종료일? ");
     while (true) {
-      String name = Prompt.inputString("만든이?(취소: 빈 문자열) ");
-      
+      String name = Prompt.promptString("만든이?(취소: 빈 문자열) ");
       if (name.length() == 0) {
-        System.out.println("프로젝트 등록을 취소합니다.");
         return;
-      } else if (memberHandler.findByName(name) != null) {
-        project.owner = name;
+      }
+      if (memberHandler.findByName(name) == null) {
+        System.out.println("등록된 회원이 아닙니다.");
+      } else {
+        p.owner = name;
         break;
       }
-      
-      System.out.println("등록된 회원이 아닙니다.");
     }
-    
-    StringBuilder members = new StringBuilder();
     while (true) {
-      String name = Prompt.inputString("팀원?(완료: 빈 문자열) ");
-      
+      String name = Prompt.promptString("팀원?(완료: 빈문자열) ");
       if (name.length() == 0) {
         break;
-      } else if (memberHandler.findByName(name) != null) {
-        if (members.length() > 0) {
-          members.append(",");
-        }
-        members.append(name);
-      } else {
+      }
+      if (memberHandler.findByName(name) == null) {
         System.out.println("등록된 회원이 아닙니다.");
+      } else {
+        p.members += name + ", ";
       }
     }
-    project.members = members.toString();
-
-    projectList.add(project);
+    
+    list[size] = p;
+    size++;
   }
   
   public void list() {
     System.out.println("[프로젝트 목록]");
-    
-    Project[] projects = projectList.toArray();
-    for (Project project : projects) {
-      System.out.printf("%d, %s, %s, %s, %s, [%s]\n",
-          project.no, 
-          project.title, 
-          project.startDate, 
-          project.endDate, 
-          project.owner,
-          project.members);
+    for (int i = 0; i < size; i++) {
+      Project p = list[i];
+      // 번호, 프로젝트명, 시작일, 종료일, 만든이
+      System.out.printf("%d, %s, %s, %s, %s, [%s]\n", // 출력 형식 지정
+          p.no, p.title, p.startDate, p.endDate, p.owner, p.members);
     }
   }
 }

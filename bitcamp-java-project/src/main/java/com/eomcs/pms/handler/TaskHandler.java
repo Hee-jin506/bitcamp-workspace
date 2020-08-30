@@ -5,49 +5,48 @@ import com.eomcs.util.Prompt;
 
 public class TaskHandler {
   
-  TaskList taskList = new TaskList();
-  MemberHandler memberHandler;
-  public String type;
+  private static final int LENGTH = 100;
+  private Task[] list = new Task[LENGTH];
+  private int size = 0;
+  private MemberHandler memberHandler;
   
-  public TaskHandler(String type, MemberHandler memberHandler) {
-    this.type = type;
+  public TaskHandler(MemberHandler memberHandler) {
     this.memberHandler = memberHandler;
   }
-
-  //다른 패키지에서 이 메서드를 사용할 수 있도록 public 으로 사용 범위를 공개한다.
+  
   public void add() {
-    System.out.println("[작업 등록]");
-    
-    Task task = new Task();
-    task.no = Prompt.inputInt("번호? ");
-    task.content = Prompt.inputString("내용? ");
-    task.deadline = Prompt.inputDate("마감일? ");
-    task.status = Prompt.inputInt("상태?\n0: 신규\n1: 진행중\n2: 완료\n> ");
-    
+    Task t = new Task();
+    System.out.println("[작업 추가]");
+    t.no = Prompt.promptInt("번호? ");
+    t.content = Prompt.promptString("내용? ");
+    t.deadline = Prompt.promptDate("마감일? ");
+    System.out.println("상태?");
+    System.out.println("0: 신규");
+    System.out.println("1: 진행중");
+    System.out.println("2: 완료");
+    t.status = Prompt.promptInt("> ");
     while (true) {
-      String name = Prompt.inputString("담당자?(취소: 빈 문자열) ");
-      
+      String name = Prompt.promptString("담당자?(취소: 빈 문자열) ");
       if (name.length() == 0) {
-        System.out.println("작업 등록을 취소합니다.");
         return;
-      } else if (memberHandler.findByName(name) != null) {
-        task.owner = name;
+      }
+      if (memberHandler.findByName(name) == null) {
+        System.out.println("등록된 회원이 아닙니다.");
+      } else {
+        t.owner = name;
         break;
       }
-      
-      System.out.println("등록된 회원이 아닙니다.");
     }
-    
-    taskList.add(task);
+    list[size] = t;
+    size++;
   }
   
   public void list() {
     System.out.println("[작업 목록]");
-    
-    Task[] tasks = taskList.toArray();
-    for (Task task : tasks) {
+    for (int i = 0; i < size; i++) {
+      Task t = list[i];
       String stateLabel = null;
-      switch (task.status) {
+      switch (t.status) {
         case 1:
           stateLabel = "진행중";
           break;
@@ -57,12 +56,9 @@ public class TaskHandler {
         default:
           stateLabel = "신규";
       }
-      System.out.printf("%d, %s, %s, %s, %s\n",
-          task.no, 
-          task.content, 
-          task.deadline, 
-          stateLabel, 
-          task.owner);
+      // 번호, 작업명, 마감일, 프로젝트, 상태, 담당자
+      System.out.printf("%d, %s, %s, %s, %s\n", // 출력 형식 지정
+          t.no, t.content, t.deadline, stateLabel, t.owner);
     }
   }
 }

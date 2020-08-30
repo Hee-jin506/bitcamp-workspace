@@ -1,71 +1,65 @@
 package com.eomcs.pms;
 
-
-import com.eomcs.pms.handler.TypeHandler;
+import com.eomcs.pms.handler.BoardHandler;
+import com.eomcs.pms.handler.MemberHandler;
+import com.eomcs.pms.handler.ProjectHandler;
+import com.eomcs.pms.handler.TaskHandler;
 import com.eomcs.util.Prompt;
 
-// 1) `Prompt` 클래스를 별도의 패키지로 분류한다
-// 2) 핸들러 클래스들을 별도의 패키지로 분류한다
 public class App {
   
+  static BoardHandler boardHandler1 = new BoardHandler();
+  static BoardHandler boardHandler2 = new BoardHandler();
+  static MemberHandler memberHandler = new MemberHandler();
+  static ProjectHandler projectHandler = new ProjectHandler(memberHandler);
+  static TaskHandler taskHandler = new TaskHandler(memberHandler);
   
-
   public static void main(String[] args) {
     
     loop:
       while (true) {
-        String command = Prompt.inputString("명령> ");
-
-        switch (command) {
-          case "멤버 종류 추가":
-            TypeHandler.addMemberType();
+        String answer = Prompt.promptString("명령> ");
+        
+        switch (answer) {
+          case "/board1/add":
+            boardHandler1.add();
             break;
-          case "프로젝트 종류 추가":
-            TypeHandler.addProjectType();
+          case "/board1/list":
+            boardHandler1.list();
             break;
-          case "게시판 추가":
-            TypeHandler.addBoardType();
+          case "/board2/add":
+            boardHandler2.add();
             break;
-          case "작업 종류 추가":
-            TypeHandler.addTaskType();
+          case "/board2/list":
+            boardHandler2.list();
             break;
           case "/member/add":
-            TypeHandler.mchoose().add();
+            memberHandler.add();
             break;
           case "/member/list":
-            TypeHandler.mchoose().list();
+            memberHandler.list();
             break;
           case "/project/add":
-            TypeHandler.pchoose().add();
+            projectHandler.add();
             break;
           case "/project/list":
-            TypeHandler.pchoose().list();
+            projectHandler.list();
             break;
           case "/task/add":
-            TypeHandler.tchoose().add();
+            taskHandler.add();
             break;
           case "/task/list":
-            TypeHandler.tchoose().list();
+            taskHandler.list();
             break;
-          case "/board/add":
-            TypeHandler.bchoose().add();
-            break;
-          case "/board/list":
-            TypeHandler.bchoose().list();
-            break;
-          case "quit":
           case "exit":
             System.out.println("안녕!");
             break loop;
-          default:
+          default :
             System.out.println("실행할 수 없는 명령입니다.");
+            break;
         }
-        System.out.println(); // 이전 명령의 실행을 구분하기 위해 빈 줄 출력
+        System.out.println(); // 빈 줄 출력
       }
-
-    Prompt.close();
+    Prompt.getScanner().close();
   }
-  
-  
-
 }

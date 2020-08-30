@@ -5,50 +5,33 @@ import com.eomcs.util.Prompt;
 
 public class BoardHandler {
   
-  BoardList boardList = new BoardList();
-  MemberHandler memberHandler;
-  public String type;
-  
-  public BoardHandler(String type, MemberHandler memberHandler) {
-    this.type = type;
-    this.memberHandler = memberHandler;
-  }
+  private static final int LENGTH = 100;
+  private Board[] list = new Board[LENGTH];
+  private int size = 0;
   
   public void add() {
-    System.out.println("[게시물 등록]");
+    Board b = new Board();
+    System.out.println("[회원 추가]");
+    b.no = Prompt.promptInt("번호? ");
+    b.title = Prompt.promptString("제목? ");
+    b.content = Prompt.promptString("내용? ");
+    b.password = Prompt.promptString("암호? ");
+    b.writer = Prompt.promptString("작성자? ");
+    b.registeredDate = new java.sql.Date(System.currentTimeMillis());
+    b.viewCount = 0;
     
-    Board board = new Board();
-    board.no = Prompt.inputInt("번호? ");
-    board.title = Prompt.inputString("제목? ");
-    board.content = Prompt.inputString("내용? ");
-    while (true) {
-      String name = Prompt.inputString("작성자?(취소: 빈 문자열) ");
-      
-      if (name.length() == 0) {
-        System.out.println("프로젝트 등록을 취소합니다.");
-        return;
-      } else if (memberHandler.findByName(name) != null) {
-        board.writer = name;
-        break;
-      }
-      
-      System.out.println("등록된 회원이 아닙니다.");
-    }
-    board.registeredDate = new java.sql.Date(System.currentTimeMillis());
-    
-    boardList.add(board);
+    list[size] = b;
+    size++;
   }
   
   public void list() {
-    System.out.println("[게시물 목록]");
-    Board[] boards = boardList.toArray();
-    for (Board board : boards) {
-      System.out.printf("%d, %s, %s, %s, %s\n",
-          board.no, 
-          board.title, 
-          board.writer,  
-          board.registeredDate,
-          board.viewCount);
+    System.out.println("[회원 목록]");
+    for (int i = 0; i < size; i++) {
+      // 번호, 이름, 이메일, 전화, 가입일
+      Board b = list[i];
+      System.out.printf("%d, %s, %s, %s, %s\n", // 출력 형식 지정
+          b.no, b.title, b.writer, b.registeredDate, b.viewCount);
     }
   }
+
 }
