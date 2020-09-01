@@ -1,0 +1,33 @@
+package com.eomcs.generic.ex01;
+
+import java.util.ArrayList;
+
+public class Exam0220 {
+  static class A {}
+  static class B1 extends A {}
+  static class B2 extends A {}
+  static class C extends B1 {}
+  
+  public static void main(String[] args) {
+    m1(new ArrayList());
+    // m1(new ArrayList<A>());
+    m1(new ArrayList<B1>());
+    // m1(new ArrayList<B2>());
+    // m1(new ArrayList<C>());
+    
+  }
+  
+  static void m1(ArrayList<B1> list) {
+    // list.add(new Object());
+    // list.add(new A());
+    list.add(new B1());
+    // list.add(new B2());
+    list.add(new C());
+    
+    System.out.println(list.get(0));
+    System.out.println(list.get(1));
+    System.out.println(list.get(2));
+    System.out.println(list.get(3));
+    System.out.println(list.get(4));
+  }
+}

@@ -1,37 +1,127 @@
 package com.eomcs.pms.handler;
 
+import java.sql.Date;
 import com.eomcs.pms.domain.Board;
+import com.eomcs.util.ArrayList;
 import com.eomcs.util.Prompt;
 
 public class BoardHandler {
-  
-  private static final int LENGTH = 100;
-  private Board[] list = new Board[LENGTH];
-  private int size = 0;
-  
+
+  ArrayList<Board> boardList = new ArrayList<>();
+
   public void add() {
-    Board b = new Board();
-    System.out.println("[회원 추가]");
-    b.no = Prompt.promptInt("번호? ");
-    b.title = Prompt.promptString("제목? ");
-    b.content = Prompt.promptString("내용? ");
-    b.password = Prompt.promptString("암호? ");
-    b.writer = Prompt.promptString("작성자? ");
-    b.registeredDate = new java.sql.Date(System.currentTimeMillis());
-    b.viewCount = 0;
-    
-    list[size] = b;
-    size++;
+    System.out.println("[게시물 등록]");
+
+    Board board = new Board();
+    board.setNo(Prompt.inputInt("번호? "));
+    board.setTitle(Prompt.inputString("제목? "));
+    board.setContent(Prompt.inputString("내용? "));
+    board.setWriter(Prompt.inputString("작성자? "));
+    board.setRegisteredDate(new Date(System.currentTimeMillis()));
+    board.setViewCount(0);
+
+    boardList.add(board);
+
+    System.out.println("게시글을 등록하였습니다.");
   }
-  
+
   public void list() {
-    System.out.println("[회원 목록]");
-    for (int i = 0; i < size; i++) {
-      // 번호, 이름, 이메일, 전화, 가입일
-      Board b = list[i];
-      System.out.printf("%d, %s, %s, %s, %s\n", // 출력 형식 지정
-          b.no, b.title, b.writer, b.registeredDate, b.viewCount);
+    System.out.println("[게시물 목록]");
+
+    for (int i = 0; i < boardList.size(); i++) {
+      Board board = boardList.get(i);
+      System.out.printf("%d, %s, %s, %s, %d\n",
+          board.getNo(),
+          board.getTitle(),
+          board.getWriter(),
+          board.getRegisteredDate(),
+          board.getViewCount());
     }
   }
 
+  public void detail() {
+    System.out.println("[게시물 상세보기]");
+    int no = Prompt.inputInt("번호? ");
+    Board board = findByNo(no);
+
+    if (board == null) {
+      System.out.println("해당 번호의 게시글이 없습니다.");
+      return;
+    }
+
+    board.setViewCount(board.getViewCount() + 1);
+
+    System.out.printf("제목: %s\n", board.getTitle());
+    System.out.printf("내용: %s\n", board.getContent());
+    System.out.printf("작성자: %s\n", board.getWriter());
+    System.out.printf("등록일: %s\n", board.getRegisteredDate());
+    System.out.printf("조회수: %d\n", board.getViewCount());
+  }
+
+  public void update() {
+    System.out.println("[게시글 변경]");
+    int no = Prompt.inputInt("번호? ");
+    Board board = findByNo(no);
+    if (board == null) {
+      System.out.println("해당 번호의 게시글이 없습니다.");
+      return;
+    } else {
+      String title = Prompt.inputString(
+          String.format("제목(%s)? ", board.getTitle()));
+      String content = Prompt.inputString(
+          String.format("내용(%s)? ", board.getContent()));
+      String writer = Prompt.inputString(
+          String.format("작성자(%s)? ", board.getWriter()));
+      String response = Prompt.inputString("정말 변경하시겠습니까?(y/N) ");
+      if (response.equalsIgnoreCase("Y")) { 
+        board.setTitle(title);
+        board.setContent(content);
+        board.setWriter(writer);
+        System.out.println("게시글 변경하였습니다.");
+      } else {
+        System.out.println("게시글 변경을 취소하였습니다.");
+      }
+    }
+  }
+  
+  public void delete() {
+    System.out.println("[게시글 삭제]");
+    int no = Prompt.inputInt("번호? ");
+    int index = indexOf(no);
+    if (index == -1) {
+      System.out.println("해당 번호의 게시글이 없습니다.");
+      return;
+    } else {
+      String response = Prompt.inputString("정말 삭제하시겠습니까?(y/N) ");
+      if (response.equalsIgnoreCase("Y")) { 
+        boardList.remove(index);
+        System.out.println("게시글을 삭제하였습니다.");
+      } else {
+        System.out.println("게시글 삭제를 취소하였습니다.");
+      }
+    }
+  }
+  
+
+  private int indexOf(int no) {
+    for (int i = 0; i < boardList.size(); i++) {
+      if (boardList.get(i).getNo() == no) {
+        return i;
+      }
+    }
+    // TODO Auto-generated method stub
+    return -1;
+  }
+
+  private Board findByNo(int no) {
+    for (int i = 0; i < boardList.size(); i++) {
+      Board board = boardList.get(i);
+      if (board.getNo() == no) {
+        return board;
+      }
+    }
+    return null;
+  }
+
+ 
 }
