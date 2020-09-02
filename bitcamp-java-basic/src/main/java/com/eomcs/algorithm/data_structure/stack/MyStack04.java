@@ -27,4 +27,5 @@ public class MyStack04 extends MyLinkedList {
     }
     return get(this.size() - 1);
   }
+  
 }

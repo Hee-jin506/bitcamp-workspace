@@ -101,6 +101,10 @@ public class ArrayList<E> {
     System.arraycopy(this.elementData, 0, arr, 0, this.size);
     return arr; // 넉넉할 때는 파라미터로 받은 배열을 그대로 리턴. 
   }
+  
+  public E[] toArray(Class<? extends E[]> classType) {
+    return Arrays.copyOf(this.elementData, this.size, classType);
+  }
 }
 
 

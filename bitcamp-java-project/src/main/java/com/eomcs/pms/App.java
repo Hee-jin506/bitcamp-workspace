@@ -5,20 +5,28 @@ import com.eomcs.pms.handler.MemberHandler;
 import com.eomcs.pms.handler.ProjectHandler;
 import com.eomcs.pms.handler.TaskHandler;
 import com.eomcs.util.Prompt;
+import com.eomcs.util.Queue;
+import com.eomcs.util.Stack;
 
 public class App {
 
   public static void main(String[] args) {
 
     BoardHandler boardHandler = new BoardHandler();
+    
     MemberHandler memberHandler = new MemberHandler();
     ProjectHandler projectHandler = new ProjectHandler(memberHandler);
     TaskHandler taskHandler = new TaskHandler(memberHandler);
-
+    
+    Stack<String> commandList = new Stack<>();
+    Queue commandList2 = new Queue();
+    
     loop:
       while (true) {
         String command = Prompt.inputString("명령> ");
-
+        
+        commandList.push(command);
+        commandList2.offer(command);
         switch (command) {
           case "/member/add": memberHandler.add(); break;
           case "/member/list": memberHandler.list(); break;
@@ -40,6 +48,8 @@ public class App {
           case "/board/detail": boardHandler.detail(); break;
           case "/board/update": boardHandler.update(); break;
           case "/board/delete": boardHandler.delete(); break;
+          case "history": printCommandHistory(commandList); break;
+          case "history2": printCommandHistory2(commandList2); break;
           case "quit":
           case "exit":
             System.out.println("안녕!");
@@ -51,5 +61,39 @@ public class App {
       }
 
     Prompt.close();
+  }
+
+  private static void printCommandHistory(Stack<?> commandList) {
+    try {
+      Stack<?> commandStack = commandList.clone();
+      for (int count = 1; !commandStack.empty(); count++) {
+        System.out.println(commandStack.pop());
+        
+        if ((count % 5) == 0) {
+          if (Prompt.inputString(":").equalsIgnoreCase("q")) {
+            break;
+          }
+        }
+      }
+    } catch (Exception e) {
+      System.out.println("history 실행 중 오류가 발생했습니다.");
+    }
+  }
+  
+  private static void printCommandHistory2(Queue commandList2) {
+    try {
+      Queue commandQueue = commandList2.clone();
+      for (int count = 1; commandQueue.size() > 0; count++) {
+        System.out.println(commandQueue.poll());
+        
+        if ((count % 5) == 0) {
+          if (Prompt.inputString(":").equalsIgnoreCase("q")) {
+            break;
+          }
+        }
+      }
+    } catch (Exception e) {
+      System.out.println("history2 실행 중 오류가 발생했습니다.");
+    }
   }
 }
