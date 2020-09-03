@@ -2,18 +2,19 @@ package com.eomcs.pms.handler;
 
 import java.sql.Date;
 import com.eomcs.pms.domain.Task;
-import com.eomcs.util.LinkedList;
+import com.eomcs.util.AbstractList;
 import com.eomcs.util.Prompt;
 
 public class TaskHandler {
 
   //Task 객체 목록을 저장할 ArrayList 객체를 준비한다.
   // 제네릭 문법으로 항목의 타입을 지정한다.
-  LinkedList<Task> taskList = new LinkedList<>();
+  AbstractList<Task> taskList;
   MemberHandler memberHandler;
 
-  public TaskHandler(MemberHandler memberHandler) {
+  public TaskHandler(MemberHandler memberHandler, AbstractList<Task> taskList) {
     this.memberHandler = memberHandler;
+    this.taskList = taskList;
   }
 
   public void add() {
@@ -51,7 +52,7 @@ public class TaskHandler {
     // 제네릭 문법에 따라 리턴 타입이 'Task[]' 이기 때문에
     // 따로 형변환 할 필요가 없다.
     // 대신 Task[] 배열을 리턴해 달라는 의미로 배열의 타입 정보를 넘긴다.
-    Task[] tasks = taskList.toArray(Task[].class);
+    Task[] tasks = taskList.toArray(new Task[] {});
 
     for (Task task : tasks) {
       String stateLabel = null;

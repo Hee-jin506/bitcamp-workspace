@@ -1,9 +1,13 @@
 package com.eomcs.pms;
 
+import com.eomcs.pms.domain.Member;
+import com.eomcs.pms.domain.Project;
+import com.eomcs.pms.domain.Task;
 import com.eomcs.pms.handler.BoardHandler;
 import com.eomcs.pms.handler.MemberHandler;
 import com.eomcs.pms.handler.ProjectHandler;
 import com.eomcs.pms.handler.TaskHandler;
+import com.eomcs.util.ArrayList;
 import com.eomcs.util.Prompt;
 import com.eomcs.util.Queue;
 import com.eomcs.util.Stack;
@@ -12,14 +16,13 @@ public class App {
 
   public static void main(String[] args) {
 
-    BoardHandler boardHandler = new BoardHandler();
-    
-    MemberHandler memberHandler = new MemberHandler();
-    ProjectHandler projectHandler = new ProjectHandler(memberHandler);
-    TaskHandler taskHandler = new TaskHandler(memberHandler);
+    BoardHandler boardHandler = new BoardHandler(new ArrayList<>());
+    MemberHandler memberHandler = new MemberHandler(new ArrayList<Member>());
+    ProjectHandler projectHandler = new ProjectHandler(memberHandler, new ArrayList<Project>());
+    TaskHandler taskHandler = new TaskHandler(memberHandler, new ArrayList<Task>());
     
     Stack<String> commandList = new Stack<>();
-    Queue commandList2 = new Queue();
+    Queue<String> commandList2 = new Queue<>();
     
     loop:
       while (true) {
@@ -80,9 +83,9 @@ public class App {
     }
   }
   
-  private static void printCommandHistory2(Queue commandList2) {
+  private static void printCommandHistory2(Queue<?> commandList2) {
     try {
-      Queue commandQueue = commandList2.clone();
+      Queue<?> commandQueue = commandList2.clone();
       for (int count = 1; commandQueue.size() > 0; count++) {
         System.out.println(commandQueue.poll());
         

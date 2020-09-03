@@ -5,31 +5,32 @@ package com.eomcs.util;
 // 2) Queue에 값을 정의하는 off(Object)를 정의한다.
 // 3) Queue에서 값을 꺼내는 poll()를 정의한다.
 // 4) Queue에서 제일 앞에 있는 값을 조회하는 peek()을 정의한다.
-public class Queue extends LinkedList implements Cloneable {
-  public boolean offer(Object e) {
+public class Queue<E> extends LinkedList<E> implements Cloneable {
+  public boolean offer(E e) {
     return this.add(e);
   }
   
-  public Object poll() {
+  public E poll() {
     if (size() == 0) {
       return null;
     }
     return remove(0);
   }
-  public Object peek() {
+  public E peek() {
     if (size() == 0) {
       return null;
     }
     return get(0);
   }
   
+  @SuppressWarnings("unchecked")
   @Override
-  public Queue clone() throws CloneNotSupportedException {
-    Queue newQue = new Queue();
+  public Queue<E> clone() throws CloneNotSupportedException {
+    Queue<E> newQue = new Queue<>();
     
     Object[] values = this.toArray();
     for (Object value : values) {
-      newQue.offer(value);
+      newQue.offer((E) value);
     }
     return newQue;
   }

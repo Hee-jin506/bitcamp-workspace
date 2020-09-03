@@ -2,14 +2,12 @@ package com.eomcs.util;
 
 import java.util.Arrays;
 
-public class LinkedList<E> {
+public class LinkedList<E> extends AbstractList<E> {
   
   private Node<E> first;
   
   private Node<E> last;
   
-  private int size;
-
   static class Node<E> {
     E value;
     Node<E> next;
@@ -21,6 +19,7 @@ public class LinkedList<E> {
     }
   }
   
+  @Override
   public boolean add(E e) {
     Node<E> node = new Node<>();
     node.value = e;
@@ -35,6 +34,7 @@ public class LinkedList<E> {
     return true;
   }
   
+  @Override
   public void add(int index, E element) {
     if (index < 0 || index > size) {
       throw new IndexOutOfBoundsException("인덱스가 유효하지 않습니다.");
@@ -59,6 +59,7 @@ public class LinkedList<E> {
       last = node;
     }
   }
+  @Override
   public E get(int index) {
     if (index < 0 || index >= this.size) {
       throw new IndexOutOfBoundsException("인덱스가 유효하지 않습니다.");
@@ -70,6 +71,7 @@ public class LinkedList<E> {
     return cursor.value;
   }
   
+  @Override
   public E remove(int index) {
     if (index < 0 || index >= size) {
       throw new IndexOutOfBoundsException("인덱스가 유효하지 않습니다.");
@@ -99,6 +101,7 @@ public class LinkedList<E> {
     return old.value;
   }
   
+  @Override
   public E set(int index, E element) {
     if (index < 0 || index >= this.size) {
       throw new IndexOutOfBoundsException("인덱스가 유효하지 않습니다.");
@@ -111,6 +114,7 @@ public class LinkedList<E> {
     cursor.value = element;
     return old;
   }
+  @Override
   public Object[] toArray() {
     Object[] arr = new Object[this.size];
     
@@ -123,12 +127,9 @@ public class LinkedList<E> {
     return arr;
   }
   
-  public int size() {
-    return this.size;
-  }
-  
-  public E[] toArray(Class<? extends E[]> classType) {
-    Object[] arr = this.toArray();
-    return Arrays.copyOf(arr, this.size(), classType);
+  @SuppressWarnings("unchecked")
+  @Override
+  public E[] toArray(E[] arr) {
+    return (E[]) Arrays.copyOf(arr, this.size(), arr.getClass());
   }
 }

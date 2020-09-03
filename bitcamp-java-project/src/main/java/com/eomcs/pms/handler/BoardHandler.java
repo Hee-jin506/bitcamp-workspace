@@ -2,14 +2,16 @@ package com.eomcs.pms.handler;
 
 import java.sql.Date;
 import com.eomcs.pms.domain.Board;
-import com.eomcs.util.LinkedList;
+import com.eomcs.util.AbstractList;
 import com.eomcs.util.Prompt;
 
 public class BoardHandler {
 
-  // Board 타입의 객체 목록을 저장할 ArrayList 객체를 준비한다.
-  // 제네릭 문법으로 항목의 타입을 지정한다.
-  LinkedList<Board> boardList = new LinkedList<>();
+  AbstractList<Board> boardList;
+  
+  public BoardHandler(AbstractList<Board> list) {
+    this.boardList = list;
+  }
 
   public void add() {
     System.out.println("[게시물 등록]");
@@ -36,7 +38,7 @@ public class BoardHandler {
     // 제네릭 문법에 따라 리턴 타입이 'Board[]' 이기 때문에
     // 따로 형변환 할 필요가 없다.
     // 대신 Board[] 배열을 리턴해 달라는 의미로 배열의 타입 정보를 넘긴다.
-    Board[] boards = boardList.toArray(Board[].class);
+    Board[] boards = boardList.toArray(new Board[] {});
 
     for (Board board : boards) {
       System.out.printf("%d, %s, %s, %s, %d\n",

@@ -2,18 +2,19 @@ package com.eomcs.pms.handler;
 
 import java.sql.Date;
 import com.eomcs.pms.domain.Project;
-import com.eomcs.util.ArrayList;
+import com.eomcs.util.AbstractList;
 import com.eomcs.util.Prompt;
 
 public class ProjectHandler {
 
   //Project 객체 목록을 저장할 ArrayList 객체를 준비한다.
   // 제네릭 문법으로 항목의 타입을 지정한다.
-  ArrayList<Project> projectList = new ArrayList<>();
+  AbstractList<Project> projectList;
   MemberHandler memberHandler;
 
-  public ProjectHandler(MemberHandler memberHandler) {
+  public ProjectHandler(MemberHandler memberHandler, AbstractList<Project> projectList) {
     this.memberHandler = memberHandler;
+    this.projectList = projectList;
   }
 
   public void add() {
@@ -69,7 +70,7 @@ public class ProjectHandler {
     // 제네릭 문법에 따라 리턴 타입이 'Project[]' 이기 때문에
     // 따로 형변환 할 필요가 없다.
     // 대신 Project[] 배열을 리턴해 달라는 의미로 배열의 타입 정보를 넘긴다.
-    Project[] projects = projectList.toArray(Project[].class);
+    Project[] projects = projectList.toArray(new Project[] {});
 
     for (Project project : projects) {
       System.out.printf("%d, %s, %s, %s, %s, [%s]\n",
