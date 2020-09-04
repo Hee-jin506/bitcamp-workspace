@@ -1,15 +1,15 @@
 package com.eomcs.pms.handler;
 
 import com.eomcs.pms.domain.Member;
-import com.eomcs.util.AbstractList;
+import com.eomcs.util.List;
 import com.eomcs.util.Prompt;
 
 public class MemberHandler {
 
   //Member 객체 목록을 저장할 ArrayList 객체를 준비한다.
-  AbstractList<Member> memberList;
+  List<Member> memberList;
 
-  public MemberHandler(AbstractList<Member> List) {
+  public MemberHandler(List<Member> List) {
     this.memberList = List;
   }
   // 다른 패키지에서 이 메서드를 사용할 수 있도록 public 으로 사용 범위를 공개한다.
