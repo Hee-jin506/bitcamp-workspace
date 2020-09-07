@@ -1,37 +1,73 @@
 package com.eomcs.util;
 
+import java.util.NoSuchElementException;
 
-// 1) Queue 를 구현하기위해 기존에 작성한 MyLinkedList를 상속받는다.
-// 2) Queue에 값을 정의하는 off(Object)를 정의한다.
-// 3) Queue에서 값을 꺼내는 poll()를 정의한다.
-// 4) Queue에서 제일 앞에 있는 값을 조회하는 peek()을 정의한다.
-public class Queue<E> extends LinkedList<E> implements Cloneable {
+public class Queue<E> extends LinkedList<E> {
+
   public boolean offer(E e) {
-    return this.add(e);
+    return add(e);
   }
-  
+
   public E poll() {
     if (size() == 0) {
       return null;
     }
     return remove(0);
   }
+
   public E peek() {
     if (size() == 0) {
       return null;
     }
     return get(0);
   }
-  
+
   @SuppressWarnings("unchecked")
   @Override
   public Queue<E> clone() throws CloneNotSupportedException {
-    Queue<E> newQue = new Queue<>();
-    
+    // => MyQueue는 MyLinkedList를 상속 받았고,
+    //    MyLinkedList의 경우 노드와 노드 사이를 연결해야 하기 때문에 
+    //    단순히 'shallow copy'를 수행해서는 안된다.
+    // => 다음과 같이 새 Queue를 만들고, 
+    //    기존 Queue에 저장된 값을 꺼내서 새 Queue에 저장해야 한다.
+    Queue<E> newQueue = new Queue<>();
     Object[] values = this.toArray();
     for (Object value : values) {
-      newQue.offer((E) value);
+      newQueue.offer((E) value);
     }
-    return newQue;
+    return newQueue;
   }
+  
+  @Override
+  public Iterator<E> iterator() {
+    try {
+      return new QueueIterator<E>(this.clone());
+    } catch (Exception e) {
+      throw new RuntimeException("큐 복제 중 오류 발생");
+    }
+  }
+  
+  private static class QueueIterator<E> implements Iterator<E> {
+
+    Queue<E> queue;
+    
+    QueueIterator(Queue<E> queue) {
+      this.queue = queue;
+    }
+    
+    @Override
+    public boolean hasNext() {
+      return queue.size() != 0;
+    }
+
+    @Override
+    public E next() {
+      if (queue.size() == 0) {
+        throw new NoSuchElementException();
+      }
+      return queue.poll();
+    }
+
+  }
+
 }

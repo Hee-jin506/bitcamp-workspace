@@ -2,13 +2,20 @@ package com.eomcs.pms.handler;
 
 import java.sql.Date;
 import com.eomcs.pms.domain.Board;
+import com.eomcs.util.Iterator;
 import com.eomcs.util.List;
 import com.eomcs.util.Prompt;
 
 public class BoardHandler {
 
+  // 목록을 다루는 객체를 지정할 때,
+  // => 특정 클래스(예: AbstractList, LinkedList, ArrayList)를 지정하는 대신에,
+  // => 사용 규칙(예: List)을 지정함으로써
+  //    더 다양한 타입의 객체로 교체할 수 있게 만든다.
+  // => `List` 규칙을 따르는 객체라면 어떤 클래스의 객체든지 사용할 수 있다.
+  //    결국 유지보수를 더 유연하게 하기 위함이다. 
   List<Board> boardList;
-  
+
   public BoardHandler(List<Board> list) {
     this.boardList = list;
   }
@@ -24,9 +31,6 @@ public class BoardHandler {
     board.setRegisteredDate(new Date(System.currentTimeMillis()));
     board.setViewCount(0);
 
-    // 제네릭 문법에 따라 add()를 호출할 때 넘겨줄 수 있는 값은 
-    // Board 또는 그 하위 타입의 인스턴스만 가능하다.
-    // 다른 타입은 불가능하다.
     boardList.add(board);
 
     System.out.println("게시글을 등록하였습니다.");
@@ -34,13 +38,10 @@ public class BoardHandler {
 
   public void list() {
     System.out.println("[게시물 목록]");
-
-    // 제네릭 문법에 따라 리턴 타입이 'Board[]' 이기 때문에
-    // 따로 형변환 할 필요가 없다.
-    // 대신 Board[] 배열을 리턴해 달라는 의미로 배열의 타입 정보를 넘긴다.
-    Board[] boards = boardList.toArray(new Board[] {});
-
-    for (Board board : boards) {
+    
+    Iterator<Board> iterator = boardList.iterator();
+    while (iterator.hasNext()) {
+      Board board = iterator.next();
       System.out.printf("%d, %s, %s, %s, %d\n",
           board.getNo(),
           board.getTitle(),
@@ -49,72 +50,92 @@ public class BoardHandler {
           board.getViewCount());
     }
   }
-  
+
   public void detail() {
-    System.out.println("[게시글 조회]");
+    System.out.println("[게시물 상세보기]");
     int no = Prompt.inputInt("번호? ");
     Board board = findByNo(no);
+
     if (board == null) {
-      System.out.println("해당 번호의 게시글을 찾지 못했습니다.");
-    } else {
-      System.out.printf("제목: %s\n", board.getTitle());
-      System.out.printf("내용: %s\n", board.getContent());
-      System.out.printf("작성자: %s\n", board.getWriter());
+      System.out.println("해당 번호의 게시글이 없습니다.");
+      return;
     }
-  }
-  
-  public void update() {
-    System.out.println("[게시글 변경]");
-    int no = Prompt.inputInt("번호? ");
-    Board board = findByNo(no);
-    if (board == null) {
-      System.out.println("해당 번호의 게시글을 찾지 못했습니다.");
-    } else {
-      String title = Prompt.inputString(String.format("제목(%s)? ", board.getTitle()));
-      String content = Prompt.inputString(String.format("내용(%s)? ", board.getContent()));
-      String writer = Prompt.inputString(String.format("작성자(%s)? ", board.getWriter()));
-      if (Prompt.inputString("정말 변경하시겠습니까?(y/N) ").equalsIgnoreCase("y")) {
-        board.setTitle(title);
-        board.setContent(content);
-        board.setWriter(writer);
-        System.out.println("게시글을 변경하였습니다.");
-      } else {
-        System.out.println("게시글 변경을 취소하였습니다.");
-      }
-    }
-  }
-  
-  public void delete() {
-    System.out.println("[게시글 삭제]");
-    int no = Prompt.inputInt("번호? ");
-    int index = indexOf(no);
-    if (index == -1) {
-      System.out.println("해당 번호의 게시글을 찾지 못했습니다.");
-    } else {
-      if(Prompt.inputString("정말 삭제하시겠습니까?(y/N) ").equalsIgnoreCase("y")) {
-        boardList.remove(index);
-        System.out.println("게시글을 삭제하였습니다.");
-      } else {
-        System.out.println("게시글 삭제를 취소하였습니다.");
-      }
-    }
+
+    board.setViewCount(board.getViewCount() + 1);
+
+    System.out.printf("제목: %s\n", board.getTitle());
+    System.out.printf("내용: %s\n", board.getContent());
+    System.out.printf("작성자: %s\n", board.getWriter());
+    System.out.printf("등록일: %s\n", board.getRegisteredDate());
+    System.out.printf("조회수: %d\n", board.getViewCount());
   }
 
-  private int indexOf(int no) {
-    for (int i = 0; i < boardList.size(); i++) {
-      if (boardList.get(i).getNo() == no) {
-        return i;
-      }
+  public void update() {
+    System.out.println("[게시물 변경]");
+    int no = Prompt.inputInt("번호? ");
+    Board board = findByNo(no);
+
+    if (board == null) {
+      System.out.println("해당 번호의 게시글이 없습니다.");
+      return;
     }
-    return -1;
+
+    String title = Prompt.inputString(
+        String.format("제목(%s)? ", board.getTitle()));
+    String content = Prompt.inputString(
+        String.format("내용(%s)? ", board.getContent()));
+    String writer = Prompt.inputString(
+        String.format("작성자(%s)? ", board.getWriter()));
+
+    String response = Prompt.inputString("정말 변경하시겠습니까?(y/N) ");
+    if (!response.equalsIgnoreCase("y")) {
+      System.out.println("게시글 변경을 취소하였습니다.");
+      return;
+    }
+
+    board.setTitle(title);
+    board.setContent(content);
+    board.setWriter(writer);
+    System.out.println("게시글을 변경하였습니다.");
+  }
+
+  public void delete() {
+    System.out.println("[게시물 삭제]");
+    int no = Prompt.inputInt("번호? ");
+    int index = indexOf(no);
+
+    if (index == -1) {
+      System.out.println("해당 번호의 게시글이 없습니다.");
+      return;
+    }
+
+    String response = Prompt.inputString("정말 삭제하시겠습니까?(y/N) ");
+    if (!response.equalsIgnoreCase("y")) {
+      System.out.println("게시글 삭제를 취소하였습니다.");
+      return;
+    }
+
+    boardList.remove(index);
+    System.out.println("게시글을 삭제하였습니다.");
   }
 
   private Board findByNo(int no) {
     for (int i = 0; i < boardList.size(); i++) {
-      if (boardList.get(i).getNo() == no) {
-        return boardList.get(i);
+      Board board = boardList.get(i);
+      if (board.getNo() == no) {
+        return board;
       }
     }
     return null;
+  }
+
+  private int indexOf(int no) {
+    for (int i = 0; i < boardList.size(); i++) {
+      Board board = boardList.get(i);
+      if (board.getNo() == no) {
+        return i;
+      }
+    }
+    return -1;
   }
 }

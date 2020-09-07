@@ -1,5 +1,6 @@
 package com.eomcs.pms;
 
+import com.eomcs.pms.domain.Board;
 import com.eomcs.pms.domain.Member;
 import com.eomcs.pms.domain.Project;
 import com.eomcs.pms.domain.Task;
@@ -8,6 +9,9 @@ import com.eomcs.pms.handler.MemberHandler;
 import com.eomcs.pms.handler.ProjectHandler;
 import com.eomcs.pms.handler.TaskHandler;
 import com.eomcs.util.ArrayList;
+import com.eomcs.util.Iterator;
+import com.eomcs.util.LinkedList;
+import com.eomcs.util.List;
 import com.eomcs.util.Prompt;
 import com.eomcs.util.Queue;
 import com.eomcs.util.Stack;
@@ -16,20 +20,29 @@ public class App {
 
   public static void main(String[] args) {
 
-    BoardHandler boardHandler = new BoardHandler(new ArrayList<>());
-    MemberHandler memberHandler = new MemberHandler(new ArrayList<Member>());
-    ProjectHandler projectHandler = new ProjectHandler(memberHandler, new ArrayList<Project>());
-    TaskHandler taskHandler = new TaskHandler(memberHandler, new ArrayList<Task>());
-    
-    Stack<String> commandList = new Stack<>();
-    Queue<String> commandList2 = new Queue<>();
-    
+    List<Board> boardList = new ArrayList<>();
+    BoardHandler boardHandler = new BoardHandler(boardList);
+
+    List<Member> memberList = new LinkedList<>();
+    MemberHandler memberHandler = new MemberHandler(memberList);
+
+    List<Project> projectList = new LinkedList<>();
+    ProjectHandler projectHandler = new ProjectHandler(projectList, memberHandler);
+
+    List<Task> taskList = new ArrayList<>();
+    TaskHandler taskHandler = new TaskHandler(taskList, memberHandler);
+
+    Stack<String> commandStack = new Stack<>();
+    Queue<String> commandQueue = new Queue<>();
+
     loop:
       while (true) {
         String command = Prompt.inputString("명령> ");
-        
-        commandList.push(command);
-        commandList2.offer(command);
+
+        // 사용자가 입력한 명령을 보관한다.
+        commandStack.push(command);
+        commandQueue.offer(command);
+
         switch (command) {
           case "/member/add": memberHandler.add(); break;
           case "/member/list": memberHandler.list(); break;
@@ -51,8 +64,9 @@ public class App {
           case "/board/detail": boardHandler.detail(); break;
           case "/board/update": boardHandler.update(); break;
           case "/board/delete": boardHandler.delete(); break;
-          case "history": printCommandHistory(commandList); break;
-          case "history2": printCommandHistory2(commandList2); break;
+          case "history": printCommandHistory(commandStack.iterator()); break;
+          // history2 명령을 처리한다.
+          case "history2": printCommandHistory(commandQueue.iterator()); break;
           case "quit":
           case "exit":
             System.out.println("안녕!");
@@ -66,37 +80,22 @@ public class App {
     Prompt.close();
   }
 
-  private static void printCommandHistory(Stack<?> commandList) {
+  static void printCommandHistory(Iterator<String> iterator) {
     try {
-      Stack<?> commandStack = commandList.clone();
-      for (int count = 1; !commandStack.empty(); count++) {
-        System.out.println(commandStack.pop());
-        
-        if ((count % 5) == 0) {
-          if (Prompt.inputString(":").equalsIgnoreCase("q")) {
-            break;
-          }
+      int count = 0;
+      while (iterator.hasNext()) {
+        System.out.println(iterator.next());
+        count++;
+
+        // 5개 출력할 때 마다 계속 출력할지 묻는다.
+        if ((count % 5) == 0 && Prompt.inputString(":").equalsIgnoreCase("q")) {
+          break;
         }
       }
     } catch (Exception e) {
-      System.out.println("history 실행 중 오류가 발생했습니다.");
+      System.out.println("history 명령 처리 중 오류 발생!");
     }
   }
+
   
-  private static void printCommandHistory2(Queue<?> commandList2) {
-    try {
-      Queue<?> commandQueue = commandList2.clone();
-      for (int count = 1; commandQueue.size() > 0; count++) {
-        System.out.println(commandQueue.poll());
-        
-        if ((count % 5) == 0) {
-          if (Prompt.inputString(":").equalsIgnoreCase("q")) {
-            break;
-          }
-        }
-      }
-    } catch (Exception e) {
-      System.out.println("history2 실행 중 오류가 발생했습니다.");
-    }
-  }
 }
