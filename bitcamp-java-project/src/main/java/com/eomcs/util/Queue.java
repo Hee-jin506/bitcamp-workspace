@@ -40,34 +40,34 @@ public class Queue<E> extends LinkedList<E> {
   
   @Override
   public Iterator<E> iterator() {
-    try {
-      return new QueueIterator<E>(this.clone());
-    } catch (Exception e) {
-      throw new RuntimeException("큐 복제 중 오류 발생");
+    class QueueIterator implements Iterator<E> {
+      
+      Queue<E> queue;
+      
+      QueueIterator() {
+        try {
+          this.queue = Queue.this.clone();        
+        } catch (Exception e) {
+          throw new RuntimeException("큐 복제 중 오류 발생");
+        }
+      }
+      
+      @Override
+      public boolean hasNext() {
+        return queue.size() != 0;
+      }
+      
+      @Override
+      public E next() {
+        if (queue.size() == 0) {
+          throw new NoSuchElementException();
+        }
+        return queue.poll();
+      }
+      
     }
+      return new QueueIterator();
   }
   
-  private static class QueueIterator<E> implements Iterator<E> {
-
-    Queue<E> queue;
-    
-    QueueIterator(Queue<E> queue) {
-      this.queue = queue;
-    }
-    
-    @Override
-    public boolean hasNext() {
-      return queue.size() != 0;
-    }
-
-    @Override
-    public E next() {
-      if (queue.size() == 0) {
-        throw new NoSuchElementException();
-      }
-      return queue.poll();
-    }
-
-  }
 
 }

@@ -41,32 +41,32 @@ public class Stack<E> extends LinkedList<E> {
   
   @Override
   public Iterator<E> iterator() {
-    try {
-      return new StackIterator<E>(this.clone());      
-    } catch (Exception e) {
-      throw new RuntimeException("스택 복제 중 오류 발생");
+    class StackIterator implements Iterator<E> {
+      
+      Stack<E> stack;
+      
+      public StackIterator() {
+        try {
+          this.stack = Stack.this.clone();
+        } catch (Exception e) {
+          throw new RuntimeException("스택 복제 중 오류 발생");
+        }
+      }
+      
+      @Override
+      public boolean hasNext() {
+        return !stack.empty();
+      }
+      
+      @Override
+      public E next() {
+        if (stack.empty()) {
+          throw new NoSuchElementException();
+        }
+        return stack.pop();
+      }
     }
+      return new StackIterator();      
   }
   
-  private static class StackIterator<E> implements Iterator<E> {
-
-    Stack<E> stack;
-    
-    StackIterator(Stack<E> stack) {
-      this.stack = stack;
-    }
-    
-    @Override
-    public boolean hasNext() {
-      return !stack.empty();
-    }
-
-    @Override
-    public E next() {
-      if (stack.empty()) {
-        throw new NoSuchElementException();
-      }
-      return stack.pop();
-    }
-  }
 }
