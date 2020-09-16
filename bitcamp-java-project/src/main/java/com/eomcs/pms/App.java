@@ -45,8 +45,22 @@ import com.eomcs.util.Prompt;
 
 public class App {
   static List<Board> boardList = new ArrayList<>();
+  static List<Member> memberList = new LinkedList<>();
+  static List<Project> projectList = new LinkedList<>();
+  
+  static File boardFile = new File("./board.csv");
+  static File memberFile = new File("./member.csv");
+  static File projectFile = new File("./project.csv");
+  static File taskFile = new File("./task.csv");
+  static List<Task> taskList = new ArrayList<>();
+
 
   public static void main(String[] args) {
+    
+    loadBoards();
+    loadMembers();
+    loadProjects();
+    loadTasks();
     
     // 파일에서 데이터를 읽어 List에 저장한다.
 
@@ -60,7 +74,6 @@ public class App {
     commandMap.put("/board/update", new BoardUpdateCommand(boardList));
     commandMap.put("/board/delete", new BoardDeleteCommand(boardList));
 
-    List<Member> memberList = new LinkedList<>();
     MemberListCommand memberListCommand = new MemberListCommand(memberList);
     commandMap.put("/member/add", new MemberAddCommand(memberList));
     commandMap.put("/member/list", memberListCommand);
@@ -68,14 +81,12 @@ public class App {
     commandMap.put("/member/update", new MemberUpdateCommand(memberList));
     commandMap.put("/member/delete", new MemberDeleteCommand(memberList));
 
-    List<Project> projectList = new LinkedList<>();
     commandMap.put("/project/add", new ProjectAddCommand(projectList, memberListCommand));
     commandMap.put("/project/list", new ProjectListCommand(projectList));
     commandMap.put("/project/detail", new ProjectDetailCommand(projectList));
     commandMap.put("/project/update", new ProjectUpdateCommand(projectList, memberListCommand));
     commandMap.put("/project/delete", new ProjectDeleteCommand(projectList));
 
-    List<Task> taskList = new ArrayList<>();
     commandMap.put("/task/add", new TaskAddCommand(taskList, memberListCommand));
     commandMap.put("/task/list", new TaskListCommand(taskList));
     commandMap.put("/task/detail", new TaskDetailCommand(taskList));
@@ -130,6 +141,9 @@ public class App {
     Prompt.close();
     
     saveBoards();
+    saveMembers();
+    saveProjects();
+    saveTasks();
   }
 
   static void printCommandHistory(Iterator<String> iterator) {
@@ -152,22 +166,78 @@ public class App {
   public static void saveBoards() {
     System.out.println("[게시글 저장]");
     
-    File file = new File("./board.csv");
     FileWriter out = null;
     try {
       // 데이터를 파일에 출력할 때 사용할 도구
-      out = new FileWriter(file);
+      out = new FileWriter(boardFile);
       
       // 각각 게시글 파일로 출력한다. 
       for (Board board : boardList) {
-        String record = String.format("%d,%s,%s,%s,%s,%d\n",
-            board.getNo(),
-            board.getTitle(),
-            board.getContent(),
-            board.getWriter(),
-            board.getRegisteredDate().toString(),
-            board.getViewCount());
-        out.write(record); // 번호,제목,내용,작성자,작성일,조회수CRLF
+        
+        out.write(board.toCSVString()); // 번호,제목,내용,작성자,작성일,조회수CRLF
+      }
+      
+      // 파일 출력 도구 닫기
+      // => 이 과정에서 파일 출력 도구의 임시 메모리(Buffer)에 잔류하는 데이터를 마무리로 완전히 출력한다.
+    } catch (IOException e) {
+      System.out.println("파일 출력 중 오류 발생!");
+    } finally {
+      try {
+        
+        out.close();
+      } catch (IOException e) {
+//        close() 에서 오류가 발생할때는 마땅히 할 것이 없다.
+//        그래서 그냥 무시
+      }
+    }
+  }
+  
+  static void loadBoards() {
+    System.out.println("[게시글 파일 로딩]");
+    
+    FileReader out = null;
+    Scanner scanner = null;
+    
+    try {
+      // 데이터를 파일에 출력할 때 사용할 도구
+      out = new FileReader(boardFile);
+      scanner = new Scanner(out);
+      
+      while (true) {
+        try {
+          String record = scanner.nextLine();
+          
+          // 객체를 list 목록에 추가한다.
+          boardList.add(Board.valueOfCsv(record));
+          
+        } catch (NoSuchElementException e) {
+          break;
+        }
+      }
+      
+    } catch (IOException e) {
+      System.out.println("파일 읽기 중 오류 발생!");
+    } finally {
+      try {scanner.close();} catch (Exception e) {}
+      try {out.close();} catch (Exception e) {}
+    }
+  }
+  
+
+  
+
+  public static void saveMembers() {
+    System.out.println("[회원 저장]");
+    
+    FileWriter out = null;
+    try {
+      // 데이터를 파일에 출력할 때 사용할 도구
+      out = new FileWriter(memberFile);
+      
+      // 각각 게시글 파일로 출력한다. 
+      for (Member member : memberList) {
+        
+        out.write(member.toCSVString()); 
       }
       
       // 파일 출력 도구 닫기
@@ -186,35 +256,50 @@ public class App {
     }
   }
   
-  static void loadBoards() {
-    System.out.println("[게시글 파일 로딩]");
-    File file = new File("./board.csv");
+  static void loadMembers() {
+    System.out.println("[회원 파일 로딩]");
+    
     FileReader out = null;
     Scanner scanner = null;
+    
     try {
       // 데이터를 파일에 출력할 때 사용할 도구
-      out = new FileReader(file);
+      out = new FileReader(memberFile);
       scanner = new Scanner(out);
       
       while (true) {
         try {
           String record = scanner.nextLine();
+
+          // 객체를 list 목록에 추가한다.
+          memberList.add(Member.valueOfCsv(record));
           
         } catch (NoSuchElementException e) {
           break;
         }
-        
       }
+      
+    } catch (IOException e) {
+      System.out.println("파일 읽기 중 오류 발생!");
+    } finally {
+      try {scanner.close();} catch (Exception e) {}
+      try {out.close();} catch (Exception e) {}
+    }
+  }
+  
+  public static void saveProjects() {
+    System.out.println("[프로젝트 저장]");
+    
+    FileWriter out = null;
+    try {
+      // 데이터를 파일에 출력할 때 사용할 도구
+      out = new FileWriter(projectFile);
+      
       // 각각 게시글 파일로 출력한다. 
-      for (Board board : boardList) {
-        String record = String.format("%d,%s,%s,%s,%s,%d\n",
-            board.getNo(),
-            board.getTitle(),
-            board.getContent(),
-            board.getWriter(),
-            board.getRegisteredDate().toString(),
-            board.getViewCount());
-        out.write(record); // 번호,제목,내용,작성자,작성일,조회수CRLF
+      for (Project project : projectList) {
+        
+        out.write(project.toCSVString()); 
+       
       }
       
       // 파일 출력 도구 닫기
@@ -230,6 +315,99 @@ public class App {
 //        그래서 그냥 무시
       }
       
+    }
+  }
+  
+  static void loadProjects() {
+    System.out.println("[프로젝트 파일 로딩]");
+    
+    FileReader out = null;
+    Scanner scanner = null;
+    
+    try {
+      // 데이터를 파일에 출력할 때 사용할 도구
+      out = new FileReader(projectFile);
+      scanner = new Scanner(out);
+      
+      while (true) {
+        try {
+          String record = scanner.nextLine();
+          
+          // 객체를 list 목록에 추가한다.
+          projectList.add(Project.valueOfCsv(record));
+          
+        } catch (NoSuchElementException e) {
+          break;
+        }
+      }
+      
+    } catch (IOException e) {
+      System.out.println("파일 읽기 중 오류 발생!");
+    } finally {
+      try {scanner.close();} catch (Exception e) {}
+      try {out.close();} catch (Exception e) {}
+    }
+  }
+  
+  public static void saveTasks() {
+    System.out.println("[작업 저장]");
+    
+    FileWriter out = null;
+    try {
+      // 데이터를 파일에 출력할 때 사용할 도구
+      out = new FileWriter(taskFile);
+      
+      // 각각 게시글 파일로 출력한다. 
+      for (Task task : taskList) {
+        
+        out.write(task.toCSVString()); 
+      }
+      
+      // 파일 출력 도구 닫기
+      // => 이 과정에서 파일 출력 도구의 임시 메모리(Buffer)에 잔류하는 데이터를 마무리로 완전히 출력한다.
+    } catch (IOException e) {
+      System.out.println("파일 출력 중 오류 발생!");
+    } finally {
+      try {
+        
+        out.close();
+      } catch (IOException e) {
+//        close() 에서 오류가 발생할때는 마땅히 할 것이 없다.
+//        그래서 그냥 무시
+      }
+      
+    }
+  }
+  
+  static void loadTasks() {
+    System.out.println("[작업 파일 로딩]");
+    
+    FileReader out = null;
+    Scanner scanner = null;
+    
+    try {
+      // 데이터를 파일에 출력할 때 사용할 도구
+      out = new FileReader(taskFile);
+      scanner = new Scanner(out);
+      
+      while (true) {
+        try {
+          String record = scanner.nextLine();
+          
+          // 객체를 list 목록에 추가한다.
+          taskList.add(Task.valueOfCsv(record));
+          
+        } catch (NoSuchElementException e) {
+          break;
+        }
+      }
+      
+    } catch (IOException e) {
+      System.out.println("파일 읽기 중 오류 발생!");
+//      e.printStackTrace();
+    } finally {
+      try {scanner.close();} catch (Exception e) {}
+      try {out.close();} catch (Exception e) {}
     }
   }
 }

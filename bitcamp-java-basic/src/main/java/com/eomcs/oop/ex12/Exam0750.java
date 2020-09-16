@@ -9,15 +9,15 @@ import java.util.function.Supplier;
 
 public class Exam0750 {
 
-  static Collection prepareNames(Supplier factory, String... names) {
-    Collection list = (Collection) factory.get();
-    for (String name : names) {
+  static <T> Collection<T> prepareNames(Supplier<Collection<T>> factory, T... names) {
+    Collection<T> list = factory.get();
+    for (T name : names) {
       list.add(name);
     }
     return list;
   }
 
-  static void print(Iterator i) {
+  static <T> void print(Iterator<T> i) {
     while (i.hasNext()) {
       System.out.print(i.next() + ",");
     }
@@ -33,12 +33,12 @@ public class Exam0750 {
     // 문법:
     // => 클래스명::new
     //
-    Collection c1 = prepareNames(ArrayList::new, "홍길동", "임꺽정", "유관순", "임꺽정");
+    Collection<String> c1 = prepareNames(ArrayList<String>::new, "홍길동", "임꺽정", "유관순", "임꺽정");
     print(c1.iterator());
 
     System.out.println("------------------------");
 
-    Collection c2 = prepareNames(HashSet::new, "홍길동", "임꺽정", "유관순", "임꺽정");
+    Collection<String> c2 = prepareNames(HashSet<String>::new, "홍길동", "임꺽정", "유관순", "임꺽정");
     print(c2.iterator());
   }
 

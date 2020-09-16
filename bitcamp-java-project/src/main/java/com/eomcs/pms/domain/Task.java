@@ -39,6 +39,27 @@ public class Task {
   public void setOwner(String owner) {
     this.owner = owner;
   }
+  public String toCSVString() {
+    return String.format("%d,%s,%s,%d,%s\n",
+        this.getNo(),
+        this.getContent(),
+        this.getDeadline().toString(),
+        this.getStatus(),
+        this.getOwner());
+  }
+  public static Task valueOfCsv(String record) {
+    String[] values = record.split(",");
+    
+    Task task = new Task();
+    
+    task.setNo(Integer.parseInt(values[0]));
+    task.setContent(values[1]);
+    task.setDeadline(Date.valueOf(values[2])); // "yyyy-MM-DD' -> Date 객체로 변환
+    task.setStatus(Integer.parseInt(values[3]));
+    task.setOwner(values[3]);
+    
+    return task;
+  }
 
 
 }

@@ -46,6 +46,30 @@ public class Board {
   public void setViewCount(int viewCount) {
     this.viewCount = viewCount;
   }
-
+  
+  public String toCSVString() {
+    return String.format("%d,%s,%s,%s,%s,%d\n",
+        this.getNo(),
+        this.getTitle(),
+        this.getContent(),
+        this.getWriter(),
+        this.getRegisteredDate().toString(),
+        this.getViewCount());
+  }
+  
+  public static Board valueOfCsv(String csv) {
+    String[] values = csv.split(",");
+    
+    Board board = new Board();
+    
+    board.setNo(Integer.parseInt(values[0]));
+    board.setTitle(values[1]);
+    board.setContent(values[2]);
+    board.setWriter(values[3]);
+    board.setRegisteredDate(Date.valueOf(values[4])); // "yyyy-MM-DD' -> Date 객체로 변환
+    board.setViewCount(Integer.parseInt(values[5]));
+    
+    return board;
+  }
 
 }
