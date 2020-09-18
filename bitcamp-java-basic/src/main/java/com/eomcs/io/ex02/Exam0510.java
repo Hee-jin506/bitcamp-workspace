@@ -1,9 +1,9 @@
-// Byte Stream - 바이트 단위로 출력하기
+// Byte Stream - 텍스트 출력 하기
 package com.eomcs.io.ex02;
 
 import java.io.FileOutputStream;
 
-public class Exam0110 {
+public class Exam0510 {
 
   public static void main(String[] args) throws Exception {
 

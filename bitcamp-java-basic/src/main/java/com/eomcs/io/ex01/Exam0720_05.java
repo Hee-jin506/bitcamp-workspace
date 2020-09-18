@@ -16,18 +16,14 @@ public class Exam0720_05 {
   }
 
   static void deleteFile(File dir) {
-    File[] files = dir.listFiles();
-
-    for (File file : files) {
-      if (file.isDirectory()) {
+    if (dir.isDirectory()) {
+      File[] files = dir.listFiles();
+      for (File file : files) {
         deleteFile(file);
-      } else {
-        file.delete(); // 파일 삭제
       }
     }
-    dir.delete(); // 디렉토리 삭제
+    dir.delete();
   }
-
 }
 
 
