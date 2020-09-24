@@ -1,8 +1,9 @@
 package com.eomcs.pms.domain;
 
 import java.sql.Date;
+import com.eomcs.util.CsvObject;
 
-public class Board {
+public class Board implements CsvObject {
   private int no;
   private String title;
   private String content;
@@ -46,30 +47,54 @@ public class Board {
   public void setViewCount(int viewCount) {
     this.viewCount = viewCount;
   }
-  
-  public String toCSVString() {
-    return String.format("%d,%s,%s,%s,%s,%d\n",
+
+  // 객체의 필드 값을 CSV 형식의 문자열로 만들어 리턴한다.
+  @Override
+  public String toCsvString() {
+    // CSV 문자열을 만들 때 줄 바꿈 코드를 붙이지 않는다.
+    // 줄바꿈 코드는 CSV 문자열을 받아서 사용하는 쪽에서 다룰 문제다. 
+    return String.format("%d,%s,%s,%s,%s,%d", 
         this.getNo(),
         this.getTitle(),
         this.getContent(),
         this.getWriter(),
-        this.getRegisteredDate().toString(),
+        this.getRegisteredDate(),
         this.getViewCount());
   }
-  
+
+  // CSV 문자열을 가지고 객체를 생성한다.
   public static Board valueOfCsv(String csv) {
-    String[] values = csv.split(",");
-    
+    String[] fields = csv.split(",");
+
     Board board = new Board();
-    
-    board.setNo(Integer.parseInt(values[0]));
-    board.setTitle(values[1]);
-    board.setContent(values[2]);
-    board.setWriter(values[3]);
-    board.setRegisteredDate(Date.valueOf(values[4])); // "yyyy-MM-DD' -> Date 객체로 변환
-    board.setViewCount(Integer.parseInt(values[5]));
-    
+    board.setNo(Integer.parseInt(fields[0]));
+    board.setTitle(fields[1]);
+    board.setContent(fields[2]);
+    board.setWriter(fields[3]);
+    board.setRegisteredDate(Date.valueOf(fields[4]));
+    board.setViewCount(Integer.parseInt(fields[5]));
+
     return board;
+  }
+  
+  public Board() {}
+  
+  public Board(String csv) {
+    String[] fields = csv.split(",");
+
+    this.setNo(Integer.parseInt(fields[0]));
+    this.setTitle(fields[1]);
+    this.setContent(fields[2]);
+    this.setWriter(fields[3]);
+    this.setRegisteredDate(Date.valueOf(fields[4]));
+    this.setViewCount(Integer.parseInt(fields[5]));
+
   }
 
 }
+
+
+
+
+
+

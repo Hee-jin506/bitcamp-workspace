@@ -1,20 +1,21 @@
 package com.eomcs.pms;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Queue;
-import java.util.Scanner;
 import com.eomcs.pms.domain.Board;
 import com.eomcs.pms.domain.Member;
 import com.eomcs.pms.domain.Project;
@@ -41,33 +42,39 @@ import com.eomcs.pms.handler.TaskDeleteCommand;
 import com.eomcs.pms.handler.TaskDetailCommand;
 import com.eomcs.pms.handler.TaskListCommand;
 import com.eomcs.pms.handler.TaskUpdateCommand;
+import com.eomcs.util.CsvObject;
+import com.eomcs.util.ObjectFactory;
 import com.eomcs.util.Prompt;
 
 public class App {
+
+  // main(), saveBoards(), loadBoards() 가 공유하는 필드 
   static List<Board> boardList = new ArrayList<>();
+  static File boardFile = new File("./board.csv"); // 게시글을 저장할 파일 정보
+
+  // main(), saveMembers(), loadMembers() 가 공유하는 필드 
   static List<Member> memberList = new LinkedList<>();
+  static File memberFile = new File("./member.csv"); // 회원을 저장할 파일 정보
+
+  // main(), saveProjects(), loadProjects() 가 공유하는 필드 
   static List<Project> projectList = new LinkedList<>();
-  
-  static File boardFile = new File("./board.csv");
-  static File memberFile = new File("./member.csv");
-  static File projectFile = new File("./project.csv");
-  static File taskFile = new File("./task.csv");
+  static File projectFile = new File("./project.csv"); // 프로젝트를 저장할 파일 정보
+
+  // main(), saveTasks(), loadTasks() 가 공유하는 필드 
   static List<Task> taskList = new ArrayList<>();
+  static File taskFile = new File("./task.csv"); // 작업을 저장할 파일 정보
 
 
   public static void main(String[] args) {
-    
-    loadBoards();
-    loadMembers();
-    loadProjects();
-    loadTasks();
-    
-    // 파일에서 데이터를 읽어 List에 저장한다.
 
-    // 커맨드 객체를 저장할 맵 객체를 준비한다.
+    // 파일에서 데이터 로딩
+    loadObjects(boardList, boardFile, Board::new);
+    loadObjects(memberList, memberFile, Member::new);
+    loadObjects(projectList, projectFile, Project::new);
+    loadObjects(taskList, taskFile, Task::new);
+
     Map<String,Command> commandMap = new HashMap<>();
 
-    // 맵 객체에 커맨드 객체를 보관한다.
     commandMap.put("/board/add", new BoardAddCommand(boardList));
     commandMap.put("/board/list", new BoardListCommand(boardList));
     commandMap.put("/board/detail", new BoardDetailCommand(boardList));
@@ -95,10 +102,7 @@ public class App {
 
     commandMap.put("/hello", new HelloCommand());
 
-    // 자바에서는 stack 알고리즘(LIFO)에 대한 인터페이스로 Deque 를 제공한다.
     Deque<String> commandStack = new ArrayDeque<>();
-
-    // 자바에서 제공하는 LinkedList 클래스는 Queue 구현체이기도 하다.
     Queue<String> commandQueue = new LinkedList<>();
 
     loop:
@@ -109,7 +113,6 @@ public class App {
           continue;
         }
 
-        // 사용자가 입력한 명령을 보관한다.
         commandStack.push(inputStr);
         commandQueue.offer(inputStr);
 
@@ -124,26 +127,28 @@ public class App {
             Command command = commandMap.get(inputStr);
             if (command != null) {
               try {
+                // 실행 중 오류가 발생할 수 있는 코드는 try 블록 안에 둔다.
                 command.execute();
-              
               } catch (Exception e) {
-              System.out.printf("명령 처리 중 오류 발생: %s\n%s\n",
-                  e.getClass().getName(),
-                  e.getMessage());
+                // 오류가 발생하면 그 정보를 갖고 있는 객체의 클래스 이름을 출력한다.
+                System.out.println("--------------------------------------------------------------");
+                System.out.printf("명령어 실행 중 오류 발생: %s\n", e);
+                System.out.println("--------------------------------------------------------------");
               }
             } else {
               System.out.println("실행할 수 없는 명령입니다.");
             }
         }
-        System.out.println(); // 이전 명령의 실행을 구분하기 위해 빈 줄 출력
+        System.out.println();
       }
 
     Prompt.close();
-    
-    saveBoards();
-    saveMembers();
-    saveProjects();
-    saveTasks();
+
+    // 데이터를 파일에 저장
+    saveObjects(boardList, boardFile);
+    saveObjects(memberList, memberFile);
+    saveObjects(projectList, projectFile);
+    saveObjects(taskList, taskFile);
   }
 
   static void printCommandHistory(Iterator<String> iterator) {
@@ -153,7 +158,6 @@ public class App {
         System.out.println(iterator.next());
         count++;
 
-        // 5개 출력할 때 마다 계속 출력할지 묻는다.
         if ((count % 5) == 0 && Prompt.inputString(":").equalsIgnoreCase("q")) {
           break;
         }
@@ -162,252 +166,54 @@ public class App {
       System.out.println("history 명령 처리 중 오류 발생!");
     }
   }
-  
-  public static void saveBoards() {
-    System.out.println("[게시글 저장]");
-    
-    FileWriter out = null;
-    try {
-      // 데이터를 파일에 출력할 때 사용할 도구
-      out = new FileWriter(boardFile);
-      
-      // 각각 게시글 파일로 출력한다. 
-      for (Board board : boardList) {
-        
-        out.write(board.toCSVString()); // 번호,제목,내용,작성자,작성일,조회수CRLF
-      }
-      
-      // 파일 출력 도구 닫기
-      // => 이 과정에서 파일 출력 도구의 임시 메모리(Buffer)에 잔류하는 데이터를 마무리로 완전히 출력한다.
-    } catch (IOException e) {
-      System.out.println("파일 출력 중 오류 발생!");
-    } finally {
-      try {
-        
-        out.close();
-      } catch (IOException e) {
-//        close() 에서 오류가 발생할때는 마땅히 할 것이 없다.
-//        그래서 그냥 무시
-      }
-    }
-  }
-  
-  static void loadBoards() {
-    System.out.println("[게시글 파일 로딩]");
-    
-    FileReader out = null;
-    Scanner scanner = null;
-    
-    try {
-      // 데이터를 파일에 출력할 때 사용할 도구
-      out = new FileReader(boardFile);
-      scanner = new Scanner(out);
-      
-      while (true) {
-        try {
-          String record = scanner.nextLine();
-          
-          // 객체를 list 목록에 추가한다.
-          boardList.add(Board.valueOfCsv(record));
-          
-        } catch (NoSuchElementException e) {
-          break;
-        }
-      }
-      
-    } catch (IOException e) {
-      System.out.println("파일 읽기 중 오류 발생!");
-    } finally {
-      try {scanner.close();} catch (Exception e) {}
-      try {out.close();} catch (Exception e) {}
-    }
-  }
-  
 
-  
+  private static <T extends CsvObject> void saveObjects(Collection<T> list, File file) {
+    BufferedWriter out = null;
 
-  public static void saveMembers() {
-    System.out.println("[회원 저장]");
-    
-    FileWriter out = null;
     try {
-      // 데이터를 파일에 출력할 때 사용할 도구
-      out = new FileWriter(memberFile);
-      
-      // 각각 게시글 파일로 출력한다. 
-      for (Member member : memberList) {
-        
-        out.write(member.toCSVString()); 
+      out = new BufferedWriter(new FileWriter(file));
+      for (T csvObject : list) {
+        out.write(csvObject.toCsvString());
+        out.write("\n");
       }
-      
-      // 파일 출력 도구 닫기
-      // => 이 과정에서 파일 출력 도구의 임시 메모리(Buffer)에 잔류하는 데이터를 마무리로 완전히 출력한다.
-    } catch (IOException e) {
-      System.out.println("파일 출력 중 오류 발생!");
-    } finally {
-      try {
-        
-        out.close();
-      } catch (IOException e) {
-//        close() 에서 오류가 발생할때는 마땅히 할 것이 없다.
-//        그래서 그냥 무시
-      }
-      
-    }
-  }
-  
-  static void loadMembers() {
-    System.out.println("[회원 파일 로딩]");
-    
-    FileReader out = null;
-    Scanner scanner = null;
-    
-    try {
-      // 데이터를 파일에 출력할 때 사용할 도구
-      out = new FileReader(memberFile);
-      scanner = new Scanner(out);
-      
-      while (true) {
-        try {
-          String record = scanner.nextLine();
 
-          // 객체를 list 목록에 추가한다.
-          memberList.add(Member.valueOfCsv(record));
-          
-        } catch (NoSuchElementException e) {
-          break;
-        }
-      }
-      
+      out.flush();
+
+      System.out.printf("총 %d 개의 객체를 '%s' 파일에 저장했습니다.\n", list.size(), file.getName());
+
     } catch (IOException e) {
-      System.out.println("파일 읽기 중 오류 발생!");
-    } finally {
-      try {scanner.close();} catch (Exception e) {}
-      try {out.close();} catch (Exception e) {}
-    }
-  }
-  
-  public static void saveProjects() {
-    System.out.println("[프로젝트 저장]");
-    
-    FileWriter out = null;
-    try {
-      // 데이터를 파일에 출력할 때 사용할 도구
-      out = new FileWriter(projectFile);
-      
-      // 각각 게시글 파일로 출력한다. 
-      for (Project project : projectList) {
-        
-        out.write(project.toCSVString()); 
-       
-      }
-      
-      // 파일 출력 도구 닫기
-      // => 이 과정에서 파일 출력 도구의 임시 메모리(Buffer)에 잔류하는 데이터를 마무리로 완전히 출력한다.
-    } catch (IOException e) {
-      System.out.println("파일 출력 중 오류 발생!");
+      System.out.printf("객체를 '%s' 파일에 쓰기 중 오류 발생! - %s\n", file.getName(), e.getMessage());
+
     } finally {
       try {
-        
         out.close();
       } catch (IOException e) {
-//        close() 에서 오류가 발생할때는 마땅히 할 것이 없다.
-//        그래서 그냥 무시
       }
-      
     }
   }
-  
-  static void loadProjects() {
-    System.out.println("[프로젝트 파일 로딩]");
-    
-    FileReader out = null;
-    Scanner scanner = null;
-    
+
+  private static <T> void loadObjects(Collection<T> list, File file, ObjectFactory<T> factory) {
+    BufferedReader in = null;
+
     try {
-      // 데이터를 파일에 출력할 때 사용할 도구
-      out = new FileReader(projectFile);
-      scanner = new Scanner(out);
-      
+      in = new BufferedReader(new FileReader(file));
+
       while (true) {
-        try {
-          String record = scanner.nextLine();
-          
-          // 객체를 list 목록에 추가한다.
-          projectList.add(Project.valueOfCsv(record));
-          
-        } catch (NoSuchElementException e) {
+        String record = in.readLine();
+        if (record == null) {
           break;
         }
+        list.add(factory.create(record));
       }
-      
-    } catch (IOException e) {
-      System.out.println("파일 읽기 중 오류 발생!");
-    } finally {
-      try {scanner.close();} catch (Exception e) {}
-      try {out.close();} catch (Exception e) {}
-    }
-  }
-  
-  public static void saveTasks() {
-    System.out.println("[작업 저장]");
-    
-    FileWriter out = null;
-    try {
-      // 데이터를 파일에 출력할 때 사용할 도구
-      out = new FileWriter(taskFile);
-      
-      // 각각 게시글 파일로 출력한다. 
-      for (Task task : taskList) {
-        
-        out.write(task.toCSVString()); 
-      }
-      
-      // 파일 출력 도구 닫기
-      // => 이 과정에서 파일 출력 도구의 임시 메모리(Buffer)에 잔류하는 데이터를 마무리로 완전히 출력한다.
-    } catch (IOException e) {
-      System.out.println("파일 출력 중 오류 발생!");
+      System.out.printf("'%s' 파일에서 총 %d 개의 객체를 로딩했습니다.\n", file.getName(), list.size());
+
+    } catch (Exception e) {
+      System.out.printf("'%s' 파일에 객체를 읽기 중 오류 발생! - %s\n", file.getName(), e.getMessage());
     } finally {
       try {
-        
-        out.close();
-      } catch (IOException e) {
-//        close() 에서 오류가 발생할때는 마땅히 할 것이 없다.
-//        그래서 그냥 무시
+        in.close();
+      } catch (Exception e) {
       }
-      
-    }
-  }
-  
-  static void loadTasks() {
-    System.out.println("[작업 파일 로딩]");
-    
-    FileReader out = null;
-    Scanner scanner = null;
-    
-    try {
-      // 데이터를 파일에 출력할 때 사용할 도구
-      out = new FileReader(taskFile);
-      scanner = new Scanner(out);
-      
-      while (true) {
-        try {
-          String record = scanner.nextLine();
-          
-          // 객체를 list 목록에 추가한다.
-          taskList.add(Task.valueOfCsv(record));
-          
-        } catch (NoSuchElementException e) {
-          break;
-        }
-      }
-      
-    } catch (IOException e) {
-      System.out.println("파일 읽기 중 오류 발생!");
-//      e.printStackTrace();
-    } finally {
-      try {scanner.close();} catch (Exception e) {}
-      try {out.close();} catch (Exception e) {}
     }
   }
 }
