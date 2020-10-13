@@ -1,0 +1,21 @@
+package com.eomcs.pms;
+
+import java.util.Map;
+import com.eomcs.pms.context.ApplicationContextListener;
+
+public class AppInitListener implements ApplicationContextListener {
+
+  @Override
+  public void contextInitialized(Map<String, Object> context) {
+    System.out.println("프로젝트 관리 시스템에 오신 것을 환영합니다!");
+    
+  }
+
+  @Override
+  public void contextDestroyed(Map<String, Object> context) {
+    System.out.println("안녕히 가십셔~!");
+    
+  }
+  
+
+}

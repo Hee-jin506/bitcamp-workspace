@@ -7,7 +7,7 @@ import java.io.InputStream;
 public class DataInputStream extends DecoratorInputStream {
 
   public DataInputStream(InputStream in) {
-    super(in);
+    super(in); // 수퍼 클래스의 생성자를 호출하여 연결 부품 객체를 보관한다.
   }
 
   public String readUTF() throws Exception {

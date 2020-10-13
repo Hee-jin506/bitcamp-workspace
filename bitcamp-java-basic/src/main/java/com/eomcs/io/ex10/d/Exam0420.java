@@ -2,6 +2,7 @@
 package com.eomcs.io.ex10.d;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 
@@ -11,6 +12,7 @@ public class Exam0420 {
     FileInputStream fileIn = new FileInputStream("temp/test11.data");
     BufferedInputStream bufIn = new BufferedInputStream(fileIn);
     ObjectInputStream in = new ObjectInputStream(bufIn);
+    ByteArrayInputStream in2
 
     // 테스트1:
     // - Member 클래스를 변경하지 않은 상태에서 데이터 읽기

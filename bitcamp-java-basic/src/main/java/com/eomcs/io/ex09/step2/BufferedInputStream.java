@@ -5,19 +5,21 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class BufferedInputStream extends DecoratorInputStream {
-  
+
   byte[] buf = new byte[8196];
-  int size;
-  int cursor;
-  
+  int size; // 배열에 저장되어 있는 바이트의 수
+  int cursor; // 바이트 읽은 배열의 위치
+
   public BufferedInputStream(InputStream in) {
-    super(in);
+    super(in); // 수퍼 클래스 생성자를 호출하여 연결된 부품을 보관한다.
   }
-  
+
+  // DecoratorInputStream 에서 상속 받은 메서드를 
+  // 이 클래스의 역할에 맞게끔 재정의한다.
   @Override
   public int read() throws IOException {
-    if (cursor == size) {
-      if ((size = 연결부품.read(buf)) == -1) {
+    if (cursor == size) { // 버퍼에 저장되어 있는 데이터를 모두 읽었다는 의미
+      if ((size = 연결부품.read(buf)) == -1) { // 파일에서 데이터를 읽으려 했는데 데이터가 없다.
         return -1;
       }
       cursor = 0;

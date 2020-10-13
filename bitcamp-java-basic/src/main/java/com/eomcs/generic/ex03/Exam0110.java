@@ -7,7 +7,7 @@ public class Exam0110 {
     T[] arr;
     int index = 0;
     
-    public ArrayList(Class<?> clazz) {
+    public ArrayList(Class<T> clazz) {
       // this.arr = new T[10];
       
       this.arr = (T[]) Array.newInstance(clazz, 10);
