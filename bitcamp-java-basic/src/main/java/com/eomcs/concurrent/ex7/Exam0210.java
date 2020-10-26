@@ -35,8 +35,21 @@ public class Exam0210 {
     executorService.execute(new MyRunnable(9000));
     
     executorService.execute(new MyRunnable(2000));
-    executorService.execute(new MyRunnable(3000));
+    executorService.execute(new MyRunnable(4000));
     System.out.println("main() 종료!");
   }
 
 }
+// 결과!
+// pool-1-thread-1 스레드 실행 중...
+// pool-1-thread-3 스레드 실행 중...
+// main() 종료!
+// pool-1-thread-2 스레드 실행 중...
+// pool-1-thread-2 스레드 종료!
+// pool-1-thread-2 스레드 실행 중...
+// pool-1-thread-2 스레드 종료!
+// pool-1-thread-2 스레드 실행 중...
+// pool-1-thread-1 스레드 종료!
+// pool-1-thread-3 스레드 종료!
+// pool-1-thread-2 스레드 종료!
+

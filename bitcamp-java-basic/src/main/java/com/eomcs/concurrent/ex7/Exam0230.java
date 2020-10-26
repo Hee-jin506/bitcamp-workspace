@@ -40,3 +40,16 @@ public class Exam0230 {
   }
 
 }
+// 결과!
+// main() 종료!
+// pool-1-thread-1 스레드 실행 중...
+// pool-1-thread-1 스레드 종료!
+// pool-1-thread-1 스레드 실행 중...
+// pool-1-thread-1 스레드 종료!
+// pool-1-thread-1 스레드 실행 중...
+// pool-1-thread-1 스레드 종료!
+// pool-1-thread-1 스레드 실행 중...
+// pool-1-thread-1 스레드 종료!
+// pool-1-thread-1 스레드 실행 중...
+// pool-1-thread-1 스레드 종료!
+

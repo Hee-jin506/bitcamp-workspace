@@ -10,12 +10,13 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import com.eomcs.context.ApplicationContextListener;
 import com.eomcs.pms.handler.Command;
 import com.eomcs.pms.listener.AppInitListener;
 import com.eomcs.pms.listener.DataHandlerListener;
 import com.eomcs.pms.listener.RequestMappingListener;
-import com.eomcs.util.concurrent.ThreadPool;
 
 public class ServerApp {
 
@@ -24,7 +25,7 @@ public class ServerApp {
   static boolean stop = false;
 
   // 스레드풀 준비
-  ThreadPool threadPool = new ThreadPool();
+  ExecutorService threadPool = Executors.newCachedThreadPool();
 
   // 옵저버와 공유할 맵 객체
   static Map<String,Object> context = new Hashtable<>();

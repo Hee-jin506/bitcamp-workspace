@@ -27,16 +27,31 @@ public class Exam0220 {
     }
   }
   
-  public static void main(String[] args) {
+  public static void main(String[] args) throws InterruptedException {
     ExecutorService  executorService = Executors.newCachedThreadPool();
     
     executorService.execute(new MyRunnable(6000));
     executorService.execute(new MyRunnable(3000));
     executorService.execute(new MyRunnable(9000));
-    
     executorService.execute(new MyRunnable(2000));
-    executorService.execute(new MyRunnable(3000));
+    
+    Thread.sleep(3000);
+    
+    executorService.execute(new MyRunnable(4000));
     System.out.println("main() 종료!");
   }
 
 }
+// 결과!
+// pool-1-thread-1 스레드 실행 중...
+// pool-1-thread-2 스레드 실행 중...
+// pool-1-thread-3 스레드 실행 중...
+// pool-1-thread-4 스레드 실행 중...
+// pool-1-thread-4 스레드 종료!
+// main() 종료!
+// pool-1-thread-4 스레드 실행 중...
+// pool-1-thread-2 스레드 종료!
+// pool-1-thread-1 스레드 종료!
+// pool-1-thread-4 스레드 종료!
+// pool-1-thread-3 스레드 종료!
+
