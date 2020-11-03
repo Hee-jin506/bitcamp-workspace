@@ -21,7 +21,9 @@ public class MemberAddCommand implements Command {
 
     try (Connection con = DriverManager.getConnection(
         "jdbc:mysql://localhost:3306/studydb?user=study&password=1111");
-        PreparedStatement stmt = con.prepareStatement("insert into pms_member(name, email, password, photo, tel) values(?,?,?,?,?)")) {
+        PreparedStatement stmt = con.prepareStatement(
+            "insert into pms_member(name,email,password,photo,tel)"
+                + " values(?,?,?,?,?)")) {
 
       stmt.setString(1, member.getName());
       stmt.setString(2, member.getEmail());
@@ -29,10 +31,11 @@ public class MemberAddCommand implements Command {
       stmt.setString(4, member.getPhoto());
       stmt.setString(5, member.getTel());
       stmt.executeUpdate();
-      System.out.println("게시글을 등록하였습니다.");
-      
+
+      System.out.println("회원을 등록하였습니다.");
+
     } catch (Exception e) {
-      System.out.println("게시글 등록 중 오류 발생!");
+      System.out.println("회원 등록 중 오류 발생!");
       e.printStackTrace();
     }
   }

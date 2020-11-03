@@ -9,7 +9,9 @@ public class Task {
   private String content;
   private Date deadline;
   private int status;
-  private String owner;
+  private Member owner;
+  private int projectNo;
+  private String projectTitle;
 
   public int getNo() {
     return no;
@@ -35,10 +37,23 @@ public class Task {
   public void setStatus(int status) {
     this.status = status;
   }
-  public String getOwner() {
+  public Member getOwner() {
     return owner;
   }
-  public void setOwner(String owner) {
+  public void setOwner(Member owner) {
     this.owner = owner;
   }
+  public int getProjectNo() {
+    return projectNo;
+  }
+  public void setProjectNo(int projectNO) {
+    this.projectNo = projectNO;
+  }
+  public String getProjectTitle() {
+    return projectTitle;
+  }
+  public void setProjectTitle(String projectTitle) {
+    this.projectTitle = projectTitle;
+  }
+  
 }
