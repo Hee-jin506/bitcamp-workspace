@@ -1,5 +1,7 @@
 package com.eomcs.pms;
 
+import java.io.File;
+import java.sql.Connection;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -13,13 +15,24 @@ import java.util.Queue;
 import com.eomcs.context.ApplicationContextListener;
 import com.eomcs.pms.dao.BoardDao;
 import com.eomcs.pms.dao.MemberDao;
+import com.eomcs.pms.dao.ProjectDao;
+import com.eomcs.pms.dao.TaskDao;
+import com.eomcs.pms.dao.mariadb.BoardDaoImpl;
+import com.eomcs.pms.dao.mariadb.MemberDaoImpl;
+import com.eomcs.pms.dao.mariadb.ProjectDaoImpl;
+import com.eomcs.pms.dao.mariadb.TaskDaoImpl;
+import com.eomcs.pms.filter.AuthCommandFilter;
+import com.eomcs.pms.filter.CommandFilterManager;
+import com.eomcs.pms.filter.DefaultCommandFilter;
+import com.eomcs.pms.filter.LogCommandFilter;
 import com.eomcs.pms.handler.BoardAddCommand;
 import com.eomcs.pms.handler.BoardDeleteCommand;
 import com.eomcs.pms.handler.BoardDetailCommand;
-import com.eomcs.pms.handler.BoardListCommand;
 import com.eomcs.pms.handler.BoardUpdateCommand;
 import com.eomcs.pms.handler.Command;
 import com.eomcs.pms.handler.HelloCommand;
+import com.eomcs.pms.handler.LoginCommand;
+import com.eomcs.pms.handler.LogoutCommand;
 import com.eomcs.pms.handler.MemberAddCommand;
 import com.eomcs.pms.handler.MemberDeleteCommand;
 import com.eomcs.pms.handler.MemberDetailCommand;
@@ -30,11 +43,13 @@ import com.eomcs.pms.handler.ProjectDeleteCommand;
 import com.eomcs.pms.handler.ProjectDetailCommand;
 import com.eomcs.pms.handler.ProjectListCommand;
 import com.eomcs.pms.handler.ProjectUpdateCommand;
+import com.eomcs.pms.handler.Request;
 import com.eomcs.pms.handler.TaskAddCommand;
 import com.eomcs.pms.handler.TaskDeleteCommand;
 import com.eomcs.pms.handler.TaskDetailCommand;
 import com.eomcs.pms.handler.TaskListCommand;
 import com.eomcs.pms.handler.TaskUpdateCommand;
+import com.eomcs.pms.handler.WhoAmICommand;
 import com.eomcs.pms.listener.AppInitListener;
 import com.eomcs.util.Prompt;
 
@@ -93,40 +108,57 @@ public class App {
     notifyApplicationContextListenerOnServiceStarted();
 
     Map<String,Command> commandMap = new HashMap<>();
+    Connection con = (Connection) context.get("con");
 
-    MemberListCommand memberListCommand = new MemberListCommand();
-    
-    BoardDao boardDao = new BoardDao();
-    MemberDao memberDao = new MemberDao();
-    
+    BoardDao boardDao = new BoardDaoImpl(con);
+    MemberDao memberDao = new MemberDaoImpl(con);
+    ProjectDao projectDao = new ProjectDaoImpl(con);
+    TaskDao taskDao = new TaskDaoImpl(con);
+
+    MemberListCommand memberListCommand = new MemberListCommand(memberDao);
+
     commandMap.put("/board/add", new BoardAddCommand(boardDao, memberDao));
-    commandMap.put("/board/list", new BoardListCommand(boardDao));
+    commandMap.put("/board/list", memberListCommand);
     commandMap.put("/board/detail", new BoardDetailCommand(boardDao));
     commandMap.put("/board/update", new BoardUpdateCommand(boardDao));
     commandMap.put("/board/delete", new BoardDeleteCommand(boardDao));
 
-    commandMap.put("/member/add", new MemberAddCommand());
+    commandMap.put("/member/add", new MemberAddCommand(memberDao));
     commandMap.put("/member/list", memberListCommand);
-    commandMap.put("/member/detail", new MemberDetailCommand());
-    commandMap.put("/member/update", new MemberUpdateCommand());
-    commandMap.put("/member/delete", new MemberDeleteCommand());
+    commandMap.put("/member/detail", new MemberDetailCommand(memberDao));
+    commandMap.put("/member/update", new MemberUpdateCommand(memberDao));
+    commandMap.put("/member/delete", new MemberDeleteCommand(memberDao));
 
-    commandMap.put("/project/add", new ProjectAddCommand(memberListCommand));
-    commandMap.put("/project/list", new ProjectListCommand());
-    commandMap.put("/project/detail", new ProjectDetailCommand());
-    commandMap.put("/project/update", new ProjectUpdateCommand(memberListCommand));
-    commandMap.put("/project/delete", new ProjectDeleteCommand());
+    commandMap.put("/project/add", new ProjectAddCommand(projectDao, memberDao));
+    commandMap.put("/project/list", new ProjectListCommand(projectDao));
+    commandMap.put("/project/detail", new ProjectDetailCommand(projectDao));
+    commandMap.put("/project/update", new ProjectUpdateCommand(projectDao, memberDao));
+    commandMap.put("/project/delete", new ProjectDeleteCommand(projectDao));
 
-    commandMap.put("/task/add", new TaskAddCommand(memberListCommand));
-    commandMap.put("/task/list", new TaskListCommand());
-    commandMap.put("/task/detail", new TaskDetailCommand());
-    commandMap.put("/task/update", new TaskUpdateCommand(memberListCommand));
-    commandMap.put("/task/delete", new TaskDeleteCommand());
+    commandMap.put("/task/add", new TaskAddCommand(taskDao, projectDao));
+    commandMap.put("/task/list", new TaskListCommand(taskDao));
+    commandMap.put("/task/detail", new TaskDetailCommand(taskDao));
+    commandMap.put("/task/update", new TaskUpdateCommand(taskDao, projectDao));
+    commandMap.put("/task/delete", new TaskDeleteCommand(taskDao));
 
     commandMap.put("/hello", new HelloCommand());
+    commandMap.put("/login", new LoginCommand(memberDao));
+    commandMap.put("/whoami", new WhoAmICommand());
+    commandMap.put("/logout", new LogoutCommand());
+    
+    context.put("commandMap", commandMap);
+    
+    CommandFilterManager filterManager = new CommandFilterManager();
+    
+    filterManager.add(new LogCommandFilter(new File("command.log")));
+    filterManager.add(new AuthCommandFilter());
+    filterManager.add(new DefaultCommandFilter());
+    
+    filterManager.init(context);
 
     Deque<String> commandStack = new ArrayDeque<>();
     Queue<String> commandQueue = new LinkedList<>();
+    
 
     loop:
       while (true) {
@@ -139,6 +171,7 @@ public class App {
         commandStack.push(inputStr);
         commandQueue.offer(inputStr);
 
+
         switch (inputStr) {
           case "history": printCommandHistory(commandStack.iterator()); break;
           case "history2": printCommandHistory(commandQueue.iterator()); break;
@@ -147,25 +180,17 @@ public class App {
             System.out.println("안녕!");
             break loop;
           default:
-            Command command = commandMap.get(inputStr);
-            if (command != null) {
-              try {
-                // 실행 중 오류가 발생할 수 있는 코드는 try 블록 안에 둔다.
-                command.execute();
-              } catch (Exception e) {
-                // 오류가 발생하면 그 정보를 갖고 있는 객체의 클래스 이름을 출력한다.
-                System.out.println("--------------------------------------------------------------");
-                System.out.printf("명령어 실행 중 오류 발생: %s\n", e);
-                System.out.println("--------------------------------------------------------------");
-              }
-            } else {
-              System.out.println("실행할 수 없는 명령입니다.");
-            }
+            Request request = new Request(inputStr, context);
+            
+            filterManager.reset();
+            filterManager.doFilter(request);
+            
         }
         System.out.println();
       }
 
     Prompt.close();
+    filterManager.destroy();
 
     notifyApplicationContextListenerOnServiceStopped();
   }
@@ -185,8 +210,5 @@ public class App {
       System.out.println("history 명령 처리 중 오류 발생!");
     }
   }
-
-
-
 
 }

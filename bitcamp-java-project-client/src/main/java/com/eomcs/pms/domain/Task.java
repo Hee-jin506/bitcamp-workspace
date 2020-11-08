@@ -2,8 +2,6 @@ package com.eomcs.pms.domain;
 
 import java.sql.Date;
 
-//Task 클래스는 더이상 CsvObject를 구현할 필요가 없다.
-//
 public class Task {
   private int no;
   private String content;
@@ -46,8 +44,8 @@ public class Task {
   public int getProjectNo() {
     return projectNo;
   }
-  public void setProjectNo(int projectNO) {
-    this.projectNo = projectNO;
+  public void setProjectNo(int projectNo) {
+    this.projectNo = projectNo;
   }
   public String getProjectTitle() {
     return projectTitle;
@@ -55,5 +53,5 @@ public class Task {
   public void setProjectTitle(String projectTitle) {
     this.projectTitle = projectTitle;
   }
-  
+
 }
