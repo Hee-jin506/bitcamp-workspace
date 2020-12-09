@@ -1,0 +1,652 @@
+-- lms_stud
+DROP TABLE IF EXISTS lms_stud RESTRICT;
+
+-- lms_tchr
+DROP TABLE IF EXISTS lms_tchr RESTRICT;
+
+-- lms_mgr
+DROP TABLE IF EXISTS lms_mgr RESTRICT;
+
+-- lms_room
+DROP TABLE IF EXISTS lms_room RESTRICT;
+
+-- lms_lect
+DROP TABLE IF EXISTS lms_lect RESTRICT;
+
+-- lms_appl
+DROP TABLE IF EXISTS lms_appl RESTRICT;
+
+-- lms_user
+DROP TABLE IF EXISTS lms_user RESTRICT;
+
+-- lms_edu_level
+DROP TABLE IF EXISTS lms_edu_level RESTRICT;
+
+-- lms_school
+DROP TABLE IF EXISTS lms_school RESTRICT;
+
+-- lms_major
+DROP TABLE IF EXISTS lms_major RESTRICT;
+
+-- lms_center
+DROP TABLE IF EXISTS lms_center RESTRICT;
+
+-- lms_bank
+DROP TABLE IF EXISTS lms_bank RESTRICT;
+
+-- lms_tchr_lect
+DROP TABLE IF EXISTS lms_tchr_lect RESTRICT;
+
+-- lms_room_photo
+DROP TABLE IF EXISTS lms_room_photo RESTRICT;
+
+-- lms_position
+DROP TABLE IF EXISTS lms_position RESTRICT;
+
+-- lms_dept
+DROP TABLE IF EXISTS lms_dept RESTRICT;
+
+-- lms_addr
+DROP TABLE IF EXISTS lms_addr RESTRICT;
+
+-- lms_stud
+CREATE TABLE lms_stud (
+	uno   INTEGER     NOT NULL COMMENT '학생번호', -- 학생번호
+	work  INTEGER     NOT NULL COMMENT '재직여부', -- 재직여부
+	acnt  VARCHAR(20) NULL     COMMENT '계좌번호', -- 계좌번호
+	eno   INTEGER     NOT NULL COMMENT '학력번호', -- 학력번호
+	sno   INTEGER     NOT NULL COMMENT '학교번호', -- 학교번호
+	majno INTEGER     NOT NULL COMMENT '전공번호', -- 전공번호
+	banno INTEGER     NULL     COMMENT '은행번호' -- 은행번호
+)
+COMMENT 'lms_stud';
+
+-- lms_stud
+ALTER TABLE lms_stud
+	ADD CONSTRAINT PK_lms_stud -- lms_stud 기본키
+		PRIMARY KEY (
+			uno -- 학생번호
+		);
+
+-- lms_tchr
+CREATE TABLE lms_tchr (
+	tno   INTEGER     NOT NULL COMMENT '강사번호', -- 강사번호
+	wage  INTEGER     NOT NULL COMMENT '시급', -- 시급
+	eno   INTEGER     NOT NULL COMMENT '학력번호', -- 학력번호
+	sno   INTEGER     NOT NULL COMMENT '학교번호', -- 학교번호
+	majno INTEGER     NOT NULL COMMENT '전공번호', -- 전공번호
+	acnt  VARCHAR(20) NULL     COMMENT '계좌번호', -- 계좌번호
+	banno INTEGER     NULL     COMMENT '은행번호' -- 은행번호
+)
+COMMENT 'lms_tchr';
+
+-- lms_tchr
+ALTER TABLE lms_tchr
+	ADD CONSTRAINT PK_lms_tchr -- lms_tchr 기본키
+		PRIMARY KEY (
+			tno -- 강사번호
+		);
+
+-- lms_mgr
+CREATE TABLE lms_mgr (
+	mno INTEGER     NOT NULL COMMENT '매니저번호', -- 매니저번호
+	fax VARCHAR(30) NULL     COMMENT '팩스', -- 팩스
+	pno INTEGER     NOT NULL COMMENT '직급번호', -- 직급번호
+	dno INTEGER     NOT NULL COMMENT '부서번호' -- 부서번호
+)
+COMMENT 'lms_mgr';
+
+-- lms_mgr
+ALTER TABLE lms_mgr
+	ADD CONSTRAINT PK_lms_mgr -- lms_mgr 기본키
+		PRIMARY KEY (
+			mno -- 매니저번호
+		);
+
+-- lms_room
+CREATE TABLE lms_room (
+	rno   INTEGER     NOT NULL COMMENT '교실번호', -- 교실번호
+	title VARCHAR(50) NOT NULL COMMENT '교실명', -- 교실명
+	capa  INTEGER     NOT NULL COMMENT '수용인원', -- 수용인원
+	cenno INTEGER     NOT NULL COMMENT '지점번호' -- 지점번호
+)
+COMMENT 'lms_room';
+
+-- lms_room
+ALTER TABLE lms_room
+	ADD CONSTRAINT PK_lms_room -- lms_room 기본키
+		PRIMARY KEY (
+			rno -- 교실번호
+		);
+
+ALTER TABLE lms_room
+	MODIFY COLUMN rno INTEGER NOT NULL AUTO_INCREMENT COMMENT '교실번호';
+
+-- lms_lect
+CREATE TABLE lms_lect (
+	lno     INTEGER      NOT NULL COMMENT '교육과정번호', -- 교육과정번호
+	title   VARCHAR(255) NOT NULL COMMENT '과정명', -- 과정명
+	content MEDIUMTEXT   NOT NULL COMMENT '내용', -- 내용
+	sdt     DATE         NOT NULL COMMENT '시작일', -- 시작일
+	edt     DATE         NOT NULL COMMENT '종료일', -- 종료일
+	hrs     INTEGER      NOT NULL COMMENT '총 강의시간', -- 총 강의시간
+	mno     INTEGER      NULL     COMMENT '매니저번호', -- 매니저번호
+	rno     INTEGER      NULL     COMMENT '교실번호' -- 교실번호
+)
+COMMENT 'lms_lect';
+
+-- lms_lect
+ALTER TABLE lms_lect
+	ADD CONSTRAINT PK_lms_lect -- lms_lect 기본키
+		PRIMARY KEY (
+			lno -- 교육과정번호
+		);
+
+ALTER TABLE lms_lect
+	MODIFY COLUMN lno INTEGER NOT NULL AUTO_INCREMENT COMMENT '교육과정번호';
+
+-- lms_appl
+CREATE TABLE lms_appl (
+	ano  INTEGER  NOT NULL COMMENT '수강신청번호', -- 수강신청번호
+	cdt  DATETIME NOT NULL DEFAULT now() COMMENT '신청일', -- 신청일
+	stat INTEGER  NULL     COMMENT '상태', -- 상태
+	uno  INTEGER  NOT NULL COMMENT '학생번호', -- 학생번호
+	lno  INTEGER  NOT NULL COMMENT '교육과정번호' -- 교육과정번호
+)
+COMMENT 'lms_appl';
+
+-- lms_appl
+ALTER TABLE lms_appl
+	ADD CONSTRAINT PK_lms_appl -- lms_appl 기본키
+		PRIMARY KEY (
+			ano -- 수강신청번호
+		);
+
+-- lms_appl 유니크 인덱스
+CREATE UNIQUE INDEX UIX_lms_appl
+	ON lms_appl ( -- lms_appl
+		uno ASC, -- 학생번호
+		lno ASC  -- 교육과정번호
+	);
+
+ALTER TABLE lms_appl
+	MODIFY COLUMN ano INTEGER NOT NULL AUTO_INCREMENT COMMENT '수강신청번호';
+
+-- lms_user
+CREATE TABLE lms_user (
+	uno      INTEGER      NOT NULL COMMENT '사용자번호', -- 사용자번호
+	name     VARCHAR(50)  NOT NULL COMMENT '이름', -- 이름
+	email    VARCHAR(40)  NOT NULL COMMENT '이메일', -- 이메일
+	pwd      VARCHAR(120) NOT NULL COMMENT '암호', -- 암호
+	jumin    VARCHAR(13)  NOT NULL COMMENT '주민번호', -- 주민번호
+	tel      VARCHAR(30)  NOT NULL COMMENT '전화', -- 전화
+	det_addr VARCHAR(255) NULL     COMMENT '상세주소', -- 상세주소
+	photo    VARCHAR(255) NULL     COMMENT '사진', -- 사진
+	ano      INTEGER      NULL     COMMENT '주소번호' -- 주소번호
+)
+COMMENT 'lms_user';
+
+-- lms_user
+ALTER TABLE lms_user
+	ADD CONSTRAINT PK_lms_user -- lms_user 기본키
+		PRIMARY KEY (
+			uno -- 사용자번호
+		);
+
+-- lms_user 유니크 인덱스
+CREATE UNIQUE INDEX UIX_lms_user
+	ON lms_user ( -- lms_user
+		email ASC -- 이메일
+	);
+
+-- lms_user 유니크 인덱스2
+CREATE UNIQUE INDEX UIX_lms_user2
+	ON lms_user ( -- lms_user
+		jumin ASC -- 주민번호
+	);
+
+-- lms_user 인덱스
+CREATE INDEX IX_lms_user
+	ON lms_user( -- lms_user
+		name ASC -- 이름
+	);
+
+ALTER TABLE lms_user
+	MODIFY COLUMN uno INTEGER NOT NULL AUTO_INCREMENT COMMENT '사용자번호';
+
+-- lms_edu_level
+CREATE TABLE lms_edu_level (
+	eno   INTEGER     NOT NULL COMMENT '학력번호', -- 학력번호
+	title VARCHAR(50) NOT NULL COMMENT '학력명' -- 학력명
+)
+COMMENT 'lms_edu_level';
+
+-- lms_edu_level
+ALTER TABLE lms_edu_level
+	ADD CONSTRAINT PK_lms_edu_level -- lms_edu_level 기본키
+		PRIMARY KEY (
+			eno -- 학력번호
+		);
+
+-- lms_edu_level 인덱스
+CREATE INDEX IX_lms_edu_level
+	ON lms_edu_level( -- lms_edu_level
+		title ASC -- 학력명
+	);
+
+ALTER TABLE lms_edu_level
+	MODIFY COLUMN eno INTEGER NOT NULL AUTO_INCREMENT COMMENT '학력번호';
+
+-- lms_school
+CREATE TABLE lms_school (
+	sno   INTEGER     NOT NULL COMMENT '학교번호', -- 학교번호
+	title VARCHAR(50) NOT NULL COMMENT '학교명' -- 학교명
+)
+COMMENT 'lms_school';
+
+-- lms_school
+ALTER TABLE lms_school
+	ADD CONSTRAINT PK_lms_school -- lms_school 기본키
+		PRIMARY KEY (
+			sno -- 학교번호
+		);
+
+-- lms_school 인덱스
+CREATE INDEX IX_lms_school
+	ON lms_school( -- lms_school
+		title ASC -- 학교명
+	);
+
+ALTER TABLE lms_school
+	MODIFY COLUMN sno INTEGER NOT NULL AUTO_INCREMENT COMMENT '학교번호';
+
+-- lms_major
+CREATE TABLE lms_major (
+	majno INTEGER     NOT NULL COMMENT '전공번호', -- 전공번호
+	title VARCHAR(50) NOT NULL COMMENT '전공명' -- 전공명
+)
+COMMENT 'lms_major';
+
+-- lms_major
+ALTER TABLE lms_major
+	ADD CONSTRAINT PK_lms_major -- lms_major 기본키
+		PRIMARY KEY (
+			majno -- 전공번호
+		);
+
+-- lms_major 인덱스
+CREATE INDEX IX_lms_major
+	ON lms_major( -- lms_major
+		title ASC -- 전공명
+	);
+
+ALTER TABLE lms_major
+	MODIFY COLUMN majno INTEGER NOT NULL AUTO_INCREMENT COMMENT '전공번호';
+
+-- lms_center
+CREATE TABLE lms_center (
+	cenno INTEGER     NOT NULL COMMENT '지점번호', -- 지점번호
+	title VARCHAR(50) NOT NULL COMMENT '지점명' -- 지점명
+)
+COMMENT 'lms_center';
+
+-- lms_center
+ALTER TABLE lms_center
+	ADD CONSTRAINT PK_lms_center -- lms_center 기본키
+		PRIMARY KEY (
+			cenno -- 지점번호
+		);
+
+-- lms_center 인덱스
+CREATE INDEX IX_lms_center
+	ON lms_center( -- lms_center
+		title ASC -- 지점명
+	);
+
+ALTER TABLE lms_center
+	MODIFY COLUMN cenno INTEGER NOT NULL AUTO_INCREMENT COMMENT '지점번호';
+
+-- lms_bank
+CREATE TABLE lms_bank (
+	banno INTEGER     NOT NULL COMMENT '은행번호', -- 은행번호
+	title VARCHAR(50) NOT NULL COMMENT '은행명' -- 은행명
+)
+COMMENT 'lms_bank';
+
+-- lms_bank
+ALTER TABLE lms_bank
+	ADD CONSTRAINT PK_lms_bank -- lms_bank 기본키
+		PRIMARY KEY (
+			banno -- 은행번호
+		);
+
+-- lms_bank 인덱스
+CREATE INDEX IX_lms_bank
+	ON lms_bank( -- lms_bank
+		title ASC -- 은행명
+	);
+
+ALTER TABLE lms_bank
+	MODIFY COLUMN banno INTEGER NOT NULL AUTO_INCREMENT COMMENT '은행번호';
+
+-- lms_tchr_lect
+CREATE TABLE lms_tchr_lect (
+	lno INTEGER NOT NULL COMMENT '교육과정번호', -- 교육과정번호
+	tno INTEGER NOT NULL COMMENT '강사번호' -- 강사번호
+)
+COMMENT 'lms_tchr_lect';
+
+-- lms_tchr_lect
+ALTER TABLE lms_tchr_lect
+	ADD CONSTRAINT PK_lms_tchr_lect -- lms_tchr_lect 기본키
+		PRIMARY KEY (
+			lno, -- 교육과정번호
+			tno  -- 강사번호
+		);
+
+-- lms_room_photo
+CREATE TABLE lms_room_photo (
+	rpno INTEGER      NOT NULL COMMENT '교실사진번호', -- 교실사진번호
+	file VARCHAR(255) NOT NULL COMMENT '사진파일', -- 사진파일
+	rno  INTEGER      NOT NULL COMMENT '교실번호' -- 교실번호
+)
+COMMENT 'lms_room_photo';
+
+-- lms_room_photo
+ALTER TABLE lms_room_photo
+	ADD CONSTRAINT PK_lms_room_photo -- lms_room_photo 기본키
+		PRIMARY KEY (
+			rpno -- 교실사진번호
+		);
+
+ALTER TABLE lms_room_photo
+	MODIFY COLUMN rpno INTEGER NOT NULL AUTO_INCREMENT COMMENT '교실사진번호';
+
+-- lms_position
+CREATE TABLE lms_position (
+	pno   INTEGER     NOT NULL COMMENT '직급번호', -- 직급번호
+	title VARCHAR(50) NULL     COMMENT '직급명' -- 직급명
+)
+COMMENT 'lms_position';
+
+-- lms_position
+ALTER TABLE lms_position
+	ADD CONSTRAINT PK_lms_position -- lms_position 기본키
+		PRIMARY KEY (
+			pno -- 직급번호
+		);
+
+-- lms_position 인덱스
+CREATE INDEX IX_lms_position
+	ON lms_position( -- lms_position
+		title ASC -- 직급명
+	);
+
+ALTER TABLE lms_position
+	MODIFY COLUMN pno INTEGER NOT NULL AUTO_INCREMENT COMMENT '직급번호';
+
+-- lms_dept
+CREATE TABLE lms_dept (
+	dno   INTEGER     NOT NULL COMMENT '부서번호', -- 부서번호
+	title VARCHAR(50) NOT NULL COMMENT '부서명', -- 부서명
+	cenno INTEGER     NOT NULL COMMENT '지점번호' -- 지점번호
+)
+COMMENT 'lms_dept';
+
+-- lms_dept
+ALTER TABLE lms_dept
+	ADD CONSTRAINT PK_lms_dept -- lms_dept 기본키
+		PRIMARY KEY (
+			dno -- 부서번호
+		);
+
+ALTER TABLE lms_dept
+	MODIFY COLUMN dno INTEGER NOT NULL AUTO_INCREMENT COMMENT '부서번호';
+
+-- lms_addr
+CREATE TABLE lms_addr (
+	ano      INTEGER      NOT NULL COMMENT '주소번호', -- 주소번호
+	pstno    VARCHAR(6)   NOT NULL COMMENT '우편번호', -- 우편번호
+	bas_addr VARCHAR(255) NOT NULL COMMENT '기본주소' -- 기본주소
+)
+COMMENT 'lms_addr';
+
+-- lms_addr
+ALTER TABLE lms_addr
+	ADD CONSTRAINT PK_lms_addr -- lms_addr 기본키
+		PRIMARY KEY (
+			ano -- 주소번호
+		);
+
+ALTER TABLE lms_addr
+	MODIFY COLUMN ano INTEGER NOT NULL AUTO_INCREMENT COMMENT '주소번호';
+
+-- lms_stud
+ALTER TABLE lms_stud
+	ADD CONSTRAINT FK_lms_user_TO_lms_stud -- lms_user -> lms_stud
+		FOREIGN KEY (
+			uno -- 학생번호
+		)
+		REFERENCES lms_user ( -- lms_user
+			uno -- 사용자번호
+		);
+
+-- lms_stud
+ALTER TABLE lms_stud
+	ADD CONSTRAINT FK_lms_edu_level_TO_lms_stud -- lms_edu_level -> lms_stud
+		FOREIGN KEY (
+			eno -- 학력번호
+		)
+		REFERENCES lms_edu_level ( -- lms_edu_level
+			eno -- 학력번호
+		);
+
+-- lms_stud
+ALTER TABLE lms_stud
+	ADD CONSTRAINT FK_lms_school_TO_lms_stud -- lms_school -> lms_stud
+		FOREIGN KEY (
+			sno -- 학교번호
+		)
+		REFERENCES lms_school ( -- lms_school
+			sno -- 학교번호
+		);
+
+-- lms_stud
+ALTER TABLE lms_stud
+	ADD CONSTRAINT FK_lms_major_TO_lms_stud -- lms_major -> lms_stud
+		FOREIGN KEY (
+			majno -- 전공번호
+		)
+		REFERENCES lms_major ( -- lms_major
+			majno -- 전공번호
+		);
+
+-- lms_stud
+ALTER TABLE lms_stud
+	ADD CONSTRAINT FK_lms_bank_TO_lms_stud -- lms_bank -> lms_stud
+		FOREIGN KEY (
+			banno -- 은행번호
+		)
+		REFERENCES lms_bank ( -- lms_bank
+			banno -- 은행번호
+		);
+
+-- lms_tchr
+ALTER TABLE lms_tchr
+	ADD CONSTRAINT FK_lms_user_TO_lms_tchr -- lms_user -> lms_tchr
+		FOREIGN KEY (
+			tno -- 강사번호
+		)
+		REFERENCES lms_user ( -- lms_user
+			uno -- 사용자번호
+		);
+
+-- lms_tchr
+ALTER TABLE lms_tchr
+	ADD CONSTRAINT FK_lms_edu_level_TO_lms_tchr -- lms_edu_level -> lms_tchr
+		FOREIGN KEY (
+			eno -- 학력번호
+		)
+		REFERENCES lms_edu_level ( -- lms_edu_level
+			eno -- 학력번호
+		);
+
+-- lms_tchr
+ALTER TABLE lms_tchr
+	ADD CONSTRAINT FK_lms_school_TO_lms_tchr -- lms_school -> lms_tchr
+		FOREIGN KEY (
+			sno -- 학교번호
+		)
+		REFERENCES lms_school ( -- lms_school
+			sno -- 학교번호
+		);
+
+-- lms_tchr
+ALTER TABLE lms_tchr
+	ADD CONSTRAINT FK_lms_major_TO_lms_tchr -- lms_major -> lms_tchr
+		FOREIGN KEY (
+			majno -- 전공번호
+		)
+		REFERENCES lms_major ( -- lms_major
+			majno -- 전공번호
+		);
+
+-- lms_tchr
+ALTER TABLE lms_tchr
+	ADD CONSTRAINT FK_lms_bank_TO_lms_tchr -- lms_bank -> lms_tchr
+		FOREIGN KEY (
+			banno -- 은행번호
+		)
+		REFERENCES lms_bank ( -- lms_bank
+			banno -- 은행번호
+		);
+
+-- lms_mgr
+ALTER TABLE lms_mgr
+	ADD CONSTRAINT FK_lms_user_TO_lms_mgr -- lms_user -> lms_mgr
+		FOREIGN KEY (
+			mno -- 매니저번호
+		)
+		REFERENCES lms_user ( -- lms_user
+			uno -- 사용자번호
+		);
+
+-- lms_mgr
+ALTER TABLE lms_mgr
+	ADD CONSTRAINT FK_lms_position_TO_lms_mgr -- lms_position -> lms_mgr
+		FOREIGN KEY (
+			pno -- 직급번호
+		)
+		REFERENCES lms_position ( -- lms_position
+			pno -- 직급번호
+		);
+
+-- lms_mgr
+ALTER TABLE lms_mgr
+	ADD CONSTRAINT FK_lms_dept_TO_lms_mgr -- lms_dept -> lms_mgr
+		FOREIGN KEY (
+			dno -- 부서번호
+		)
+		REFERENCES lms_dept ( -- lms_dept
+			dno -- 부서번호
+		);
+
+-- lms_room
+ALTER TABLE lms_room
+	ADD CONSTRAINT FK_lms_center_TO_lms_room -- lms_center -> lms_room
+		FOREIGN KEY (
+			cenno -- 지점번호
+		)
+		REFERENCES lms_center ( -- lms_center
+			cenno -- 지점번호
+		);
+
+-- lms_lect
+ALTER TABLE lms_lect
+	ADD CONSTRAINT FK_lms_mgr_TO_lms_lect -- lms_mgr -> lms_lect
+		FOREIGN KEY (
+			mno -- 매니저번호
+		)
+		REFERENCES lms_mgr ( -- lms_mgr
+			mno -- 매니저번호
+		);
+
+-- lms_lect
+ALTER TABLE lms_lect
+	ADD CONSTRAINT FK_lms_room_TO_lms_lect -- lms_room -> lms_lect
+		FOREIGN KEY (
+			rno -- 교실번호
+		)
+		REFERENCES lms_room ( -- lms_room
+			rno -- 교실번호
+		);
+
+-- lms_appl
+ALTER TABLE lms_appl
+	ADD CONSTRAINT FK_lms_stud_TO_lms_appl -- lms_stud -> lms_appl
+		FOREIGN KEY (
+			uno -- 학생번호
+		)
+		REFERENCES lms_stud ( -- lms_stud
+			uno -- 학생번호
+		);
+
+-- lms_appl
+ALTER TABLE lms_appl
+	ADD CONSTRAINT FK_lms_lect_TO_lms_appl -- lms_lect -> lms_appl
+		FOREIGN KEY (
+			lno -- 교육과정번호
+		)
+		REFERENCES lms_lect ( -- lms_lect
+			lno -- 교육과정번호
+		);
+
+-- lms_user
+ALTER TABLE lms_user
+	ADD CONSTRAINT FK_lms_addr_TO_lms_user -- lms_addr -> lms_user
+		FOREIGN KEY (
+			ano -- 주소번호
+		)
+		REFERENCES lms_addr ( -- lms_addr
+			ano -- 주소번호
+		);
+
+-- lms_tchr_lect
+ALTER TABLE lms_tchr_lect
+	ADD CONSTRAINT FK_lms_lect_TO_lms_tchr_lect -- lms_lect -> lms_tchr_lect
+		FOREIGN KEY (
+			lno -- 교육과정번호
+		)
+		REFERENCES lms_lect ( -- lms_lect
+			lno -- 교육과정번호
+		);
+
+-- lms_tchr_lect
+ALTER TABLE lms_tchr_lect
+	ADD CONSTRAINT FK_lms_tchr_TO_lms_tchr_lect -- lms_tchr -> lms_tchr_lect
+		FOREIGN KEY (
+			tno -- 강사번호
+		)
+		REFERENCES lms_tchr ( -- lms_tchr
+			tno -- 강사번호
+		);
+
+-- lms_room_photo
+ALTER TABLE lms_room_photo
+	ADD CONSTRAINT FK_lms_room_TO_lms_room_photo -- lms_room -> lms_room_photo
+		FOREIGN KEY (
+			rno -- 교실번호
+		)
+		REFERENCES lms_room ( -- lms_room
+			rno -- 교실번호
+		);
+
+-- lms_dept
+ALTER TABLE lms_dept
+	ADD CONSTRAINT FK_lms_center_TO_lms_dept -- lms_center -> lms_dept
+		FOREIGN KEY (
+			cenno -- 지점번호
+		)
+		REFERENCES lms_center ( -- lms_center
+			cenno -- 지점번호
+		);
