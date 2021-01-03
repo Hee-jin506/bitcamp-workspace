@@ -27,8 +27,8 @@ public class Exam0212 {
 
     // 예) 페이징 처리를 위한 시작 인덱스와 개수를 파라미터로 넘겨라.
     HashMap<String, Object> params = new HashMap<>();
-    params.put("startIndex", 1);
-    params.put("size", 2);
+    params.put("startIndex", 6);
+    params.put("size", 3);
 
     List<Board> list = sqlSession.selectList(//
         "BoardMapper.selectBoard3", params);

@@ -5,24 +5,13 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
 
+// 역할:
+// - 소켓에 연결된 클라이언트 요청을 처리한다.
 public class RequestProcessor {
-
   Socket socket;
-  
-  public Socket getSocket() {
-    return socket;
-  }
 
   public void setSocket(Socket socket) {
     this.socket = socket;
-  }
-
-  public RequestProcessor(Socket socket) {
-    this.socket = socket;
-  }
-  
-  public RequestProcessor() {
-
   }
 
   public void service() throws Exception {
@@ -44,7 +33,7 @@ public class RequestProcessor {
       }
     }
   }
-  
+
   private String compute(String request) {
     try {
       String[] values = request.split(" ");

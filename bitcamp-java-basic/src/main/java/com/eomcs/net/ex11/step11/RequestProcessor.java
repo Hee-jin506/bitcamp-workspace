@@ -5,24 +5,13 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
 
+// 역할:
+// - 소켓에 연결된 클라이언트 요청을 처리한다.
 public class RequestProcessor {
-
   Socket socket;
-
-  public Socket getSocket() {
-    return socket;
-  }
 
   public void setSocket(Socket socket) {
     this.socket = socket;
-  }
-
-  public RequestProcessor(Socket socket) {
-    this.socket = socket;
-  }
-
-  public RequestProcessor() {
-
   }
 
   public void service() throws Exception {
@@ -30,8 +19,10 @@ public class RequestProcessor {
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         PrintStream out = new PrintStream(socket.getOutputStream());) {
 
-      sendResponse(out, compute(in.readLine())); // 클라리언트에게 응답한다.
+      // 클라이언트 접속에 대해 더이상 안내 메시지를 제공하지 않는다.
 
+      // 한 번 접속에 한 번의 요청만 처리한다.
+      sendResponse(out, compute(in.readLine())); 
     }
   }
 
@@ -45,7 +36,7 @@ public class RequestProcessor {
       int result = 0;
 
       switch (op) {
-        case "+": result = a + b; break;
+        case "+": result = a + b; Thread.sleep(10000); break;
         case "-": result = a - b; break;
         case "*": result = a * b; break;
         case "/": result = a / b; break;

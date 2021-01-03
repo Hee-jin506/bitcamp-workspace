@@ -8,7 +8,7 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 public class MyDriver implements java.sql.Driver {
-  
+
   static {
     System.out.println("com.eomcs.jdbc.ex1.MyDriver 클래스 로딩!");
   }

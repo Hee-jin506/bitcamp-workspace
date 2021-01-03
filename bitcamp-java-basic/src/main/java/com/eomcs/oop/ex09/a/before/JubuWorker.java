@@ -5,5 +5,4 @@ public class JubuWorker {
   public void doSsingSsing() {
     System.out.println("주부로 일합니다.");
   }
-
 }

@@ -6,7 +6,6 @@ public class Exam0220 {
     B3 obj = new B3();
     obj.m(100); // B3의 m(int) 호출
 
-
     // B3 클래스에서는 m() 메서드를 제대로 오버라이딩 하였다.
     // @Override ?
     // => 애노테이션 문법이다.

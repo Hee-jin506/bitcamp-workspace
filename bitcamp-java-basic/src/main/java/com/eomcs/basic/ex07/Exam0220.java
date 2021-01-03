@@ -1,18 +1,29 @@
+// Iterator 의 사용
 package com.eomcs.basic.ex07;
 
-public class Exam0220 {
-  static void hello(String name, int age) {
-    System.out.printf("%d살 %s님 반갑습니다.\n", age, name);
-  }
-  
-  public static void main(String[] args) {
-    System.out.println("main()11111");
-    hello("홍길동", 20);
-    System.out.println("main()22222");
-    hello("임꺽정", 30);
-    System.out.println("main()33333");
-    hello("유관순", 16);
-    System.out.println("main()44444");
-  }
+import java.util.Iterator;
+import java.util.LinkedList;
 
+public class Exam0220 {
+  public static void main(String[] args) {
+    String s1 = new String("aaa");
+    String s2 = new String("bbb");
+    String s3 = new String("ccc");
+    String s4 = new String("ddd");
+    String s5 = new String("eee");
+
+    LinkedList list = new LinkedList();
+    list.add(s1);
+    list.add(s2);
+    list.add(s3);
+    list.add(s4);
+    list.add(s5);
+
+    Iterator 컬렉션에서값을꺼내주는객체 = list.iterator();
+    while (컬렉션에서값을꺼내주는객체.hasNext()) {
+      System.out.print(컬렉션에서값을꺼내주는객체.next() + ", ");
+    }
+    System.out.println();
+
+  }
 }

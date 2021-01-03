@@ -1,31 +1,28 @@
 package com.eomcs.algorithm.data_structure.array;
 
 public class MyArrayListTest {
+
   public static void main(String[] args) {
-    MyArrayList<String> list = new MyArrayList<>(2);
-    list.add("aa");
-    list.add("bb");
-    list.add("cc");
-    list.add("dd");
-    print2(list);
-    list.remove(2);
-    print2(list);
-    
-    list.add(2, "ee");
-    print2(list);
+    MyArrayList.add("aaa"); // aaa
+    MyArrayList.add("bbb"); // aaa,bbb
+    MyArrayList.add("ccc"); // aaa,bbb,ccc
+    print();
+
+    MyArrayList.add(1, "xxx"); // aaa,xxx,bbb,ccc
+    print();
+
+    Object old = MyArrayList.set(2, "yyy"); // aaa,xxx,yyy,ccc
+    print();
+    System.out.println(old);
+
+    old = MyArrayList.remove(1);
+    print();
+    System.out.println(old);
   }
-  static void print(MyArrayList<String> list) {
-    Object[] arr = list.toArray();
-    for (Object obj : arr) {
-      System.out.print(obj + ",");
-    }
-    System.out.println();
-  }
-  
-  static void print2(MyArrayList<String> list) {
-    String[] arr = new String[list.size()];
-    String[] arr2 = list.toArray(arr);
-    for (String str : arr2) {
+
+  static void print() {
+    for (int i = 0; i < MyArrayList.size; i++) {
+      String str = (String) MyArrayList.get(i);
       System.out.print(str + ",");
     }
     System.out.println();

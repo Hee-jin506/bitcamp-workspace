@@ -1,18 +1,8 @@
+// Singleton 연습 : 김밥 인스턴스를 한 개만 생성하도록  Singleton 패턴을 적용하라. 
 package com.eomcs.design_pattern.singleton;
 
 class Kimbap {
-  static Kimbap kimbap;
-  
-  protected Kimbap() {
-    
-  }
-  
-  static Kimbap getInstance() {
-    if (kimbap == null) {
-      kimbap = new Kimbap();
-    }
-    return kimbap;
-  }
+  // 클래스 안의 코드를 완성하시오.
 }
 
 public class Test03 {
@@ -25,4 +15,11 @@ public class Test03 {
     System.out.println(bap2 == bap3); // true
   }
 }
+
+
+
+
+
+
+
 

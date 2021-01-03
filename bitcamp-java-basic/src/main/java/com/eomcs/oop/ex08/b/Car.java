@@ -1,6 +1,6 @@
 package com.eomcs.oop.ex08.b;
 
-public abstract class Car {
+public class Car {
 
   public Car() {
     super();

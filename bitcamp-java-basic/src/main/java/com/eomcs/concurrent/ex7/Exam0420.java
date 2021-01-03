@@ -48,7 +48,13 @@ public class Exam0420 {
     }
     // 물론 새 작업 요청도 거절한다.
     // => 예외 발생!
+    executorService.execute(new MyRunnable(4000));
 
+    // shutdown() vs shutdownNow();
+    // - shutdown()
+    //   진행 중인 작업을 완료하고 대기 중인 작업도 완료한 다음 종료.
+    // - shutdownNow()
+    //   진행 중인 작업을 즉시 종료하고, 대기 중인 작업 목록은 리턴한다.
     System.out.println("main() 종료!");
   }
 }

@@ -19,7 +19,6 @@ public class Category {
   // 중첩 클래스 이름을 일부로 소문자로 지어서
   // 마치 일반 필드인것처럼 보이게 한다.
   //
-  //
   public static class computer {
     public static final int CPU = 1;
     public static final int VGA = 2;

@@ -36,8 +36,7 @@ public class Exam0110 {
     // => 그런데 Board 클래스에는 컬럼 이름과 일치하는 프로퍼티가 없다.
 
     sqlSession.close();
-    Class clazz = String.class;
-    Method m = clazz.getMethod()
+
   }
 
 }

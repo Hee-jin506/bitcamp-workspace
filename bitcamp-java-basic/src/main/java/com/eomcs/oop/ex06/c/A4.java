@@ -10,10 +10,17 @@ public class A4 extends A3 {
   void print3() {
     System.out.printf("'%s(%s, %d)'님 반갑습니다!\n", this.name, this.age, super.age);
   }
-  
-  void test() { 
+
+  void test() {
     System.out.printf("this.tel = %s, this.working = %s\n", this.tel, this.working);
     System.out.printf("super.tel = %s, super.working = %s\n", super.tel, super.working);
+
   }
 }
+
+
+
+
+
+
 

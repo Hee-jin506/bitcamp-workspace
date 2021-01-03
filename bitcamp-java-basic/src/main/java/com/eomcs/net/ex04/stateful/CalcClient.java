@@ -14,17 +14,19 @@ public class CalcClient {
     DataOutputStream out = new DataOutputStream(socket.getOutputStream());
 
     while (true) {
+      System.out.print("값1? ");
+      out.writeInt(Integer.parseInt(keyScan.nextLine()));
 
       System.out.print("연산자? ");
       out.writeUTF(keyScan.nextLine());
 
-      System.out.print("값? ");
+      System.out.print("값2? ");
       out.writeInt(Integer.parseInt(keyScan.nextLine()));
 
       String str = in.nextLine();
       System.out.println(str);
 
-      if (str.equals("quit"))
+      if (str.equals("Goodbye!"))
         break;
     }
 
@@ -34,4 +36,5 @@ public class CalcClient {
     keyScan.close();
   }
 }
+
 

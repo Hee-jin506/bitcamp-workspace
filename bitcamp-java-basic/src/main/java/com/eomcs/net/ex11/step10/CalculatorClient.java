@@ -1,4 +1,4 @@
-// 계산기 클라이언트 만들기 - 8단계: 예외 처리 추가 (클라이언트는 변경 사항 없음)
+// 계산기 클라이언트 만들기 - 10단계: 여러 개의 클라이언트 접속 처리 (클라이언트 변경 없음)
 package com.eomcs.net.ex11.step10;
 
 import java.io.BufferedReader;

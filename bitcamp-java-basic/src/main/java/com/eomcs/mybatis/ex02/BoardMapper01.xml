@@ -38,7 +38,7 @@
   <select id="selectBoard" resultType="Board">
     select 
       board_id, <!-- Board.setBoard_id() 호출 -->
-      title caption,    <!-- Board.setTitle() 호출 -->
+      title,    <!-- Board.setTitle() 호출 -->
       contents, <!-- Board.setContents() 호출 -->
       created_date, <!-- Board.setCreated_date() 호출 -->
       view_count    <!-- Board.setView_count() 호출 -->

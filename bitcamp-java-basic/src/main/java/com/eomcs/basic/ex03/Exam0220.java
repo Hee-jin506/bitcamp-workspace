@@ -1,33 +1,52 @@
+// java.util.ArrayList의 contains()의 동작 원리 확인
 package com.eomcs.basic.ex03;
 
+import java.util.ArrayList;
+
 public class Exam0220 {
-  public static void main(String[] args) {
-    System.out.println(12783406);
-    System.out.println(1278_3406);
-    System.out.println(12_783-406);
-    
-//    System.out.println(_12783406);
-//    System.out.println(123783406_);
-    
-    System.out.println(077);
-    System.out.println(0_77);
-    System.out.println(07_7);
-    
-//    System.out.println(_077);
-//    System.out.println(077_);
-    
-    System.out.println(0b11000100);
-    System.out.println(0b110_0100);
-    System.out.println(0b1_1_0_0_1_0_0);
-    
-//    System.out.println(0b_11000100);
-//    System.out.println(0b11000100_);
-    
-    System.out.println(0xffaa);
-    System.out.println(0xff_aa);
-    
-//    System.out.println(0x_ffaa);
-//    System.out.println(0xffaa_);
+
+  // equals()를 오버라이딩 하지 않았다.
+  static class Member {
+    String name;
+    int age;
+
+    public Member(String name, int age) {
+      this.name = name;
+      this.age = age;
+    }
+
+    @Override
+    public String toString() {
+      return String.format("[%s,%d]", this.name, this.age);
+    }
   }
 
+  public static void main(String[] args) {
+    Member s1 = new Member("홍길동", 20);
+    Member s2 = new Member("임꺽정", 30);
+    Member s3 = new Member("유관순", 16);
+    Member s4 = new Member("임꺽정", 30);
+
+    ArrayList list = new ArrayList();
+    list.add(s1);
+    list.add(s2);
+    list.add(s3);
+    print(list);
+
+    System.out.println(list.contains(s4)); // false
+    // Member 클래스는 equals()를 오버라이딩 하지 않았다.
+    // 따라서 같은 값을 갖더라도 인스턴스가 다르면
+    // equals()의 검사 결과도 false가 될 것이다.
+    // 그래서 contains()로 s4 객체와 같은 객체가 있는지 검사해보면,
+    // 같은 객체가 없다고 나온다.
+  }
+
+  static void print(ArrayList list) {
+    for (int i = 0; i < list.size(); i++) {
+      System.out.print(list.get(i) + ", ");
+    }
+    System.out.println();
+  }
 }
+
+
